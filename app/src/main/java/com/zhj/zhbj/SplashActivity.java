@@ -2,6 +2,7 @@ package com.zhj.zhbj;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
@@ -10,6 +11,8 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
+
+import com.zhj.zhbj.utils.PrefUtils;
 
 public class SplashActivity extends Activity {
 
@@ -49,8 +52,19 @@ public class SplashActivity extends Activity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent=new Intent(SplashActivity.this,GuideActivity.class);
-                startActivity(intent);
+                SharedPreferences sp=getSharedPreferences("config",MODE_PRIVATE);
+                boolean first = PrefUtils.getBoolean(getApplication(), "first", false);
+
+
+                if(first){
+                   Intent intent=new Intent(SplashActivity.this,MainActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent=new Intent(SplashActivity.this,GuideActivity.class);
+                    startActivity(intent);
+                }
+
+
                 finish();
 
             }
