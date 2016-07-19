@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="我是左边的侧栏fragment"/>
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/menu_item_bg_select">
+<ListView
+    android:layout_width="match_parent"
+    android:id="@+id/lv_left_menu"
+    android:listSelector="@android:color/transparent"
+    android:divider="@android:color/transparent"
+    android:layout_height="match_parent">
+
+</ListView>
 </FrameLayout>

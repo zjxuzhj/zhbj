@@ -1,5 +1,6 @@
 package com.zhj.zhbj;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,8 @@ public class MainActivity extends SlidingFragmentActivity {
         SlidingMenu slidingMenu = getSlidingMenu();
         slidingMenu.setMode(SlidingMenu.LEFT);
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        slidingMenu.setBehindOffset(350);
+        slidingMenu.setBehindOffset(700);
+
         initFragment();
     }
 
@@ -37,6 +39,18 @@ public class MainActivity extends SlidingFragmentActivity {
         ft.commit();
 
     }
+//获取侧边栏对象
+    public LeftMenuFragment getLeftFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        LeftMenuFragment fragment = (LeftMenuFragment) fm.findFragmentByTag(FRAGMENT_LEFT_MENU);
+        return fragment;
 
+    }
+    //获取内容对象
+    public ContentFragment getContentFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        ContentFragment fragment = (ContentFragment) fm.findFragmentByTag(FRAGMENT_CONTENT);
+        return fragment;
+    }
 
 }

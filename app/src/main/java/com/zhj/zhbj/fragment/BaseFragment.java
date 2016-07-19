@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  * Created by HongJay on 2016/7/8.
  */
 public abstract class BaseFragment extends Fragment{
-    private Activity mActivity;
+   public Activity mActivity;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
