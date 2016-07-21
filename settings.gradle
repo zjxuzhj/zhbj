@@ -1,1 +1,5 @@
 include ':app'
+include ':sliding_menu'
+include ':viewPagerLibrary'
+include ':xUtils_library'
+include ':ViewPagerSamples'

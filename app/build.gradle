@@ -28,4 +28,5 @@ dependencies {
     compile project(':sliding_menu')
     compile project(path: ':xUtils_library')
     compile 'com.google.code.gson:gson:2.7'
+    compile project(':viewPagerLibrary')
 }

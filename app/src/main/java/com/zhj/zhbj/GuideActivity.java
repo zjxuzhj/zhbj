@@ -93,7 +93,7 @@ public class GuideActivity extends Activity {
     private void initViews() {
 
 
-        imageResIds = new int[]{R.drawable.guide_1, R.drawable.guide_2, R.drawable.guide_3};
+        imageResIds = new int[]{R.drawable.guide_1, R.drawable.guide_2, R.drawable.guide_3,R.drawable.guide_4};
         for (int i = 0; i < imageResIds.length; i++) {
             ImageView iv = new ImageView(this);
             iv.setBackgroundResource(imageResIds[i]);

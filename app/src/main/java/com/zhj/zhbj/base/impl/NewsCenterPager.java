@@ -1,9 +1,6 @@
 package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.view.Gravity;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -16,7 +13,7 @@ import com.zhj.zhbj.MainActivity;
 import com.zhj.zhbj.base.BaseMenuDetailPager;
 import com.zhj.zhbj.base.BasePager;
 import com.zhj.zhbj.base.menudetail.InteractMenuDetailPager;
-import com.zhj.zhbj.base.menudetail.MenuDetailPager;
+import com.zhj.zhbj.base.menudetail.NewsMenuDetailPager;
 import com.zhj.zhbj.base.menudetail.PhotosMenuDetailPager;
 import com.zhj.zhbj.base.menudetail.TopicMenuDetailPager;
 import com.zhj.zhbj.domain.NewsData;
@@ -38,7 +35,6 @@ public class NewsCenterPager extends BasePager {
 
     @Override
     public void initData() {
-        tv_title.setText("新闻中心");
         setSlidingMenuEnable(true);
         getDataFromServer();
 
@@ -73,7 +69,7 @@ public class NewsCenterPager extends BasePager {
 
         //准备四个菜单详情页
         basePagersList = new ArrayList<BaseMenuDetailPager>();
-        basePagersList.add(new MenuDetailPager(mActivity, newsData.data.get(0).children));
+        basePagersList.add(new NewsMenuDetailPager(mActivity, newsData.data.get(0).children));
         basePagersList.add(new TopicMenuDetailPager(mActivity));
         basePagersList.add(new PhotosMenuDetailPager(mActivity));
         basePagersList.add(new InteractMenuDetailPager(mActivity));

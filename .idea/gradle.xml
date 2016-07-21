@@ -8,13 +8,21 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ViewPagerSamples" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/sliding_menu" />
+            <option value="$PROJECT_DIR$/viewPagerLibrary" />
+            <option value="$PROJECT_DIR$/xUtils_library" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ViewPagerSamples" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/sliding_menu" />
+            <option value="$PROJECT_DIR$/viewPagerLibrary" />
+            <option value="$PROJECT_DIR$/xUtils_library" />
           </set>
         </option>
       </GradleProjectSettings>
