@@ -46,6 +46,7 @@ public class GuideActivity extends Activity {
                 finish();
             }
         });
+
         view_red_point = findViewById(R.id.view_red_point);
         view_red_point.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
