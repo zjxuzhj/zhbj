@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
@@ -9,7 +10,26 @@
         android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:gravity="center_horizontal"
+    android:layout_marginBottom="5dp"
+    android:layout_height="wrap_content">
+    <com.viewpagerindicator.CirclePageIndicator
 
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="38dp"
+        android:padding="10dip"
+        app:fillColor="#f00"
+        app:pageColor="@android:color/darker_gray"
+        app:radius="5dp"
+        app:strokeWidth="0dp" />
+</RelativeLayout>
     <Button
         android:id="@+id/btn_open"
         android:layout_width="wrap_content"
@@ -20,27 +40,28 @@
         android:background="@drawable/btn_guide_selector"
         android:padding="15dp"
         android:text="开始体验"
-        android:visibility="invisible"
         android:textColor="@drawable/btn_guide_text_selector"
-        android:textSize="20sp" />
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginBottom="40dp">
-    <LinearLayout
-        android:id="@+id/ll_point"
+        android:textSize="20sp"
+        android:visibility="invisible" />
+
+    <!--<RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp">
+        <LinearLayout
+            android:id="@+id/ll_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-        android:orientation="horizontal">
+            android:orientation="horizontal">
 
-    </LinearLayout>
-    <View
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:id="@+id/view_red_point"
-        android:background="@drawable/shape_point_red"></View>
-</RelativeLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:id="@+id/view_red_point"
+            android:background="@drawable/shape_point_red"></View>
+    </RelativeLayout>-->
 </RelativeLayout>

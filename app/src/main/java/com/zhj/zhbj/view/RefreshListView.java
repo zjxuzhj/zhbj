@@ -2,8 +2,14 @@ package com.zhj.zhbj.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.zhj.zhbj.R;
 
@@ -11,30 +17,145 @@ import com.zhj.zhbj.R;
  * Created by HongJay on 2016/7/21.
  */
 public class RefreshListView extends ListView {
+    public static final int STATE_PULL_REFRESH = 0;
+    public static final int STATE_RELEASH_REFRESH = 1;
+    public static final int STATE_REFRESHING = 2;
     private View mHeaderView;
+    private int startY;
+    private int endY;
+    private int dY;
+    private int mHeaderViewHeight;
+    private int paddingTop;
+    private TextView tv_title;
+    private TextView tv_date;
+    private ImageView iv_Arr;
+    private ProgressBar pb_2;
+    private RotateAnimation rotateUpAnim;
+    private RotateAnimation rotateDownAnim;
 
     public RefreshListView(Context context) {
         super(context);
         initHeadView();
+        initAnimation();
     }
+
 
     public RefreshListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initHeadView();
+        initAnimation();
     }
 
     public RefreshListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initHeadView();
+        initAnimation();
     }
-    private void initHeadView(){
-        View  mHeaderView =   View.inflate(getContext(), R.layout.refresh_header, null);
+
+
+    private void initHeadView() {
+        mHeaderView =  View.inflate(getContext(), R.layout.refresh_header, null);
         addHeaderView(mHeaderView);
         // 提前手动测量宽高
 
         mHeaderView.measure(0, 0);// 按照设置的规则测量
-        int measuredHeight = mHeaderView.getMeasuredHeight();
+        mHeaderViewHeight = mHeaderView.getMeasuredHeight();
         // 设置内边距, 可以隐藏当前控件 , -自身高度
-        mHeaderView.setPadding(0, -measuredHeight, 0, 0);
+        mHeaderView.setPadding(0, -mHeaderViewHeight, 0, 0);
+
+
+        tv_title = (TextView) mHeaderView.findViewById(R.id.textView3);
+        tv_date = (TextView) mHeaderView.findViewById(R.id.textView4);
+        iv_Arr = (ImageView) mHeaderView.findViewById(R.id.iv_arr);
+        pb_2 = (ProgressBar) mHeaderView.findViewById(R.id.progressBar2);
+    }
+
+    private int mCurrentState = 0;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startY = (int) ev.getRawY();
+
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (startY == -1) {
+                    startY = (int) ev.getRawY();
+                }
+                endY = (int) ev.getRawY();
+                if(startY==0){
+                    startY = endY;
+                }
+
+
+                dY = endY - startY;
+                System.out.println("dY"+dY);
+
+                if (dY > 0 && getFirstVisiblePosition() == 0) {
+                    paddingTop = dY - mHeaderViewHeight;
+                    mHeaderView.setPadding(0, paddingTop, 0, 0);
+                    if (paddingTop >= 0 && mCurrentState != STATE_RELEASH_REFRESH) {
+                        mCurrentState = STATE_RELEASH_REFRESH;
+                        refreshState();
+                    } else if (paddingTop < 0 && mCurrentState != STATE_PULL_REFRESH) {
+                        mCurrentState = STATE_PULL_REFRESH;
+                        refreshState();
+                    }
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                startY = -1;
+                if (mCurrentState == STATE_PULL_REFRESH) {
+                    mHeaderView.setPadding(0, -mHeaderViewHeight, 0, 0);
+                } else if (mCurrentState == STATE_RELEASH_REFRESH) {
+                    mHeaderView.setPadding(0, 0, 0, 0);
+                    mCurrentState = STATE_REFRESHING;
+                    refreshState();
+                }
+                break;
+
+        }
+        return super.onTouchEvent(ev);
+    }
+
+    private void refreshState() {
+        switch (mCurrentState) {
+            case STATE_PULL_REFRESH:
+                iv_Arr.setVisibility(VISIBLE);
+                pb_2.setVisibility(INVISIBLE);
+                iv_Arr.startAnimation(rotateDownAnim);
+                tv_title.setText("下拉刷新");
+                break;
+            case STATE_RELEASH_REFRESH:
+                iv_Arr.setVisibility(VISIBLE);
+                pb_2.setVisibility(INVISIBLE);
+                iv_Arr.startAnimation(rotateUpAnim);
+                tv_title.setText("释放刷新");
+                break;
+            case STATE_REFRESHING:
+                iv_Arr.clearAnimation();
+                iv_Arr.setVisibility(INVISIBLE);
+                pb_2.setVisibility(VISIBLE);
+                tv_title.setText("正在刷新...");
+                break;
+            default:
+                break;
+        }
+    }
+    private void initAnimation() {
+        // 向上转, 围绕着自己的中心, 逆时针旋转0 -> -180.
+        rotateUpAnim = new RotateAnimation(0f, -180f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateUpAnim.setDuration(200);
+        rotateUpAnim.setFillAfter(true); // 动画停留在结束位置
+        // 向下转, 围绕着自己的中心, 逆时针旋转 -180 -> -360
+        rotateDownAnim = new RotateAnimation(-180f, -360,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateDownAnim.setDuration(200);
+        rotateDownAnim.setFillAfter(true); // 动画停留在结束位置
     }
 }
