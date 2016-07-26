@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -213,6 +214,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                         }
 
                         vpTabDetail.setCurrentItem(currentItem); //切换到下一个页面
+
                         handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
                     };
                 };
@@ -223,6 +225,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             ArrayList<TabData.TabDetailData.TabNewsData> news = mTabData1.data.news;
             mNewsList.addAll(news);
             myListAdapter.notifyDataSetChanged();
+            tabAdapter.notifyDataSetChanged();
         }
 
     }
@@ -269,6 +272,8 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             utils.display(image, topnews.get(position).topimage); //传递image对象和图片地址
 
             container.addView(image);
+
+            image.setOnTouchListener(new TopNewsTouchListener());
             return image;
         }
 
@@ -277,7 +282,26 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             container.removeView((View) object);
         }
     }
+    //头条新闻的触摸监听
+    class TopNewsTouchListener implements View.OnTouchListener{
 
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()){
+                case  MotionEvent.ACTION_DOWN:
+                    handler.removeMessages(0);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    handler.sendEmptyMessageDelayed(0, 3000);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    handler.sendEmptyMessageDelayed(0, 3000);
+                    break;
+            }
+
+            return true;
+        }
+    }
     class MyListAdapter extends BaseAdapter {
 
         private BitmapUtils utils;

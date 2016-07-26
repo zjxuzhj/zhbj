@@ -2,6 +2,7 @@ package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -82,7 +83,7 @@ public class NewsCenterPager extends BasePager {
         basePagersList = new ArrayList<BaseMenuDetailPager>();
         basePagersList.add(new NewsMenuDetailPager(mActivity, newsData.data.get(0).children));
         basePagersList.add(new TopicMenuDetailPager(mActivity));
-        basePagersList.add(new PhotosMenuDetailPager(mActivity));
+        basePagersList.add(new PhotosMenuDetailPager(mActivity,btnPhoto));
         basePagersList.add(new InteractMenuDetailPager(mActivity));
         setCurrentMenuDetailPager(0);
     }
@@ -96,5 +97,11 @@ public class NewsCenterPager extends BasePager {
         NewsData.NewsMenuData newsMenuData = newsData.data.get(position);
         tv_title.setText(newsMenuData.title);
         pager.initData();//初始化当前页面的数据
+
+        if(pager instanceof  PhotosMenuDetailPager){
+            btnPhoto.setVisibility(View.VISIBLE);
+        }else{
+            btnPhoto.setVisibility(View.GONE);
+        }
     }
 }

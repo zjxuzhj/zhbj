@@ -3,6 +3,7 @@ package com.zhj.zhbj.base;
 import android.app.Activity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class BasePager {
     public TextView tv_title;
     public FrameLayout fl_content;
     public ImageView btn_menu;
+    public ImageButton btnPhoto;
 
     public BasePager(Activity activity) {
         mActivity = activity;
@@ -38,6 +40,7 @@ public class BasePager {
                 toogleSlidingMenu();
             }
         });
+        btnPhoto = (ImageButton) mRootView.findViewById(R.id.btn_photo);
     }
     private void toogleSlidingMenu() {
         MainActivity mainUi= (MainActivity) mActivity;

@@ -30,6 +30,19 @@
 
             />
 
+        <ImageButton
+            android:id="@+id/btn_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:visibility="invisible"
+            android:src="@drawable/icon_pic_grid_type"
+
+            />
+
     </RelativeLayout>
 
     <FrameLayout
