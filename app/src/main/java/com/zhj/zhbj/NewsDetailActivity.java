@@ -121,6 +121,7 @@ public class NewsDetailActivity extends Activity implements View.OnClickListener
                         break;
                     case 4:
                         settings.setTextSize(WebSettings.TextSize.SMALLEST);
+
                         break;
                 }
                 mCurrentSizeIndex = mCurrentItem;
