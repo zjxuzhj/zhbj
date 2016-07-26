@@ -3,6 +3,8 @@ package com.zhj.zhbj.base;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -30,15 +32,17 @@ import com.zhj.zhbj.R;
 import com.zhj.zhbj.domain.NewsData;
 import com.zhj.zhbj.domain.TabData;
 import com.zhj.zhbj.global.GlobalConstant;
+import com.zhj.zhbj.utils.CacheUtils;
 import com.zhj.zhbj.utils.PrefUtils;
 import com.zhj.zhbj.view.RefreshListView;
 
 import java.util.ArrayList;
 
+
 /**
  * Created by HongJay on 2016/7/17.
  */
-public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnPageChangeListener{
+public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnPageChangeListener {
 
     private RefreshListView mLvList;
     @ViewInject(R.id.tv_title)
@@ -55,6 +59,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private ArrayList<TabData.TabDetailData.TabNewsData> mNewsList; //新闻数据集合
     private String mMoreUrl;   //更多页面的地址
     private MyListAdapter myListAdapter;
+    private TabAdapter tabAdapter;
 
     public TabDetailPager(Activity activity, NewsData.NewsTabData newsTabData) {
         super(activity);
@@ -94,16 +99,15 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         mLvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
-
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 //把点击过的新闻的id加入
-                ids = PrefUtils.getString(mActivity,"read_ids","");
-               String readId=mNewsList.get(i).id;
-                if(!ids.contains(readId)){
+                ids = PrefUtils.getString(mActivity, "read_ids", "");
+                String readId = mNewsList.get(i).id;
+                if (!ids.contains(readId)) {
                     ids = ids + readId + ",";
-                    PrefUtils.setString(mActivity,"read_ids", ids);
+                    PrefUtils.setString(mActivity, "read_ids", ids);
                 }
                 changeReadColor(view);
 
@@ -122,6 +126,10 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
     @Override
     public void initData() {
+        String cache = CacheUtils.getCache(mUrl, mActivity);//读取缓存
+        if (!TextUtils.isEmpty(cache)) {
+            parseData(cache, false);
+        }
         HttpUtils httpUtils = new HttpUtils();
         httpUtils.send(HttpRequest.HttpMethod.GET, mUrl, new RequestCallBack<String>() {
             @Override
@@ -129,6 +137,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 String result = responseInfo.result;
                 parseData(result, false);
                 mLvList.onRefreshComplete(true);
+                CacheUtils.setCache(mUrl, result, mActivity);
             }
 
             @Override
@@ -162,6 +171,9 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
     }
 
+    private Handler handler;
+
+    //解析拿到的网络数据
     private void parseData(String result, boolean isMore) {
         Gson gson = new Gson();
         mTabData1 = gson.fromJson(result, TabData.class);
@@ -175,7 +187,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         }
         if (!isMore) {
             if (topnews != null) {
-                TabAdapter tabAdapter = new TabAdapter();
+                tabAdapter = new TabAdapter();
                 indicator.setOnPageChangeListener(this);
                 vpTabDetail.setAdapter(tabAdapter);
                 indicator.onPageSelected(0);
@@ -189,8 +201,26 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 mLvList.setAdapter(myListAdapter);
 
             }
+            if (handler == null) {
+                handler = new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        int currentItem = vpTabDetail.getCurrentItem();
+                        if (currentItem < topnews.size() - 1) {
+                            currentItem++;
+                        } else {
+                            currentItem = 0;
+                        }
+
+                        vpTabDetail.setCurrentItem(currentItem); //切换到下一个页面
+                        handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
+                    };
+                };
+
+            handler.sendEmptyMessageDelayed(0, 3000);
+            }
         } else {
-           ArrayList<TabData.TabDetailData.TabNewsData> news= mTabData1.data.news;
+            ArrayList<TabData.TabDetailData.TabNewsData> news = mTabData1.data.news;
             mNewsList.addAll(news);
             myListAdapter.notifyDataSetChanged();
         }
@@ -298,9 +328,9 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             utils.display(holder.image, item.listimage);
 
             String ids = PrefUtils.getString(mActivity, "read_ids", "");
-            if(ids.contains(getItem(i).id)){
+            if (ids.contains(getItem(i).id)) {
                 holder.title.setTextColor(Color.GRAY);
-            }else{
+            } else {
                 holder.title.setTextColor(Color.BLACK);
             }
 
@@ -308,10 +338,11 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         }
     }
 
-    private void changeReadColor(View view){
+    private void changeReadColor(View view) {
         TextView textView = (TextView) view.findViewById(R.id.textView);
         textView.setTextColor(Color.GRAY);
     }
+
     public static class ViewHolder {
         public TextView title;
         public TextView time;

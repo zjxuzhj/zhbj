@@ -1,7 +1,7 @@
 package com.zhj.zhbj;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -47,7 +47,6 @@ public class NewsDetailActivity extends Activity implements View.OnClickListener
         btnShare.setOnClickListener(this);
 
         String url = getIntent().getStringExtra("url");
-        System.out.println("url" + url);
         settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);// 表示支持js
 //        settings.setBuiltInZoomControls(true);// 显示放大缩小按钮

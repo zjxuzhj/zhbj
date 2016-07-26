@@ -1,6 +1,7 @@
 package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -19,6 +20,7 @@ import com.zhj.zhbj.base.menudetail.TopicMenuDetailPager;
 import com.zhj.zhbj.domain.NewsData;
 import com.zhj.zhbj.fragment.LeftMenuFragment;
 import com.zhj.zhbj.global.GlobalConstant;
+import com.zhj.zhbj.utils.CacheUtils;
 
 import java.util.ArrayList;
 
@@ -36,7 +38,14 @@ public class NewsCenterPager extends BasePager {
     @Override
     public void initData() {
         setSlidingMenuEnable(true);
-        getDataFromServer();
+        String cache = CacheUtils.getCache(GlobalConstant.CATEGORIES_URL, mActivity);
+       if(!TextUtils.isEmpty(cache)){
+            parseData(cache);
+           System.out.println("读取缓存");
+       }
+           getDataFromServer();  //不管有没有缓存，都获取最新数据，保证数据最新
+
+
 
     }
 
@@ -48,6 +57,8 @@ public class NewsCenterPager extends BasePager {
             public void onSuccess(ResponseInfo<String> responseInfo) {
                 String result = responseInfo.result;
                 parseData(result);
+                //设置缓存
+                CacheUtils.setCache( GlobalConstant.CATEGORIES_URL,result,mActivity);
             }
 
             @Override
