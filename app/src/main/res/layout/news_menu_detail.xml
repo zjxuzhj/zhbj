@@ -18,6 +18,7 @@
             android:layout_weight="1" />
 
         <ImageButton
+            android:onClick="click"
             android:id="@+id/ib_newt"
             android:layout_width="wrap_content"
             android:background="@android:color/transparent"

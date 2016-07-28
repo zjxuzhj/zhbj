@@ -46,9 +46,7 @@ import java.util.ArrayList;
 public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnPageChangeListener {
 
     private RefreshListView mLvList;
-    @ViewInject(R.id.tv_title)
     private TextView tvTitle;
-    @ViewInject(R.id.vp_tab_detail)
     private ViewPager vpTabDetail;
     NewsData.NewsTabData mTabData;
     private TextView tv_content;
@@ -72,9 +70,12 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.tab_detail_pager, null);
 
+
         mLvList = (RefreshListView) view.findViewById(R.id.lv_tab_detail);
         //加载头布局
         View headerView = View.inflate(mActivity, R.layout.list_header_topnews, null);
+        vpTabDetail = (ViewPager) headerView.findViewById(R.id.vp_tab_detail);
+        tvTitle= (TextView) headerView.findViewById(R.id.tv_title);
         ViewUtils.inject(this, view);//注入view和事件
         ViewUtils.inject(this, headerView);//注入view和事件
         mLvList.addHeaderView(headerView);

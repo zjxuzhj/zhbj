@@ -26,6 +26,7 @@ import com.zhj.zhbj.base.BaseMenuDetailPager;
 import com.zhj.zhbj.domain.PhotosData;
 import com.zhj.zhbj.global.GlobalConstant;
 import com.zhj.zhbj.utils.CacheUtils;
+import com.zhj.zhbj.utils.MyBitmapUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,24 +42,27 @@ public class PhotosMenuDetailPager extends BaseMenuDetailPager {
     private ListView lvPhoto;
     private GridView gvPhoto;
     private ImageButton btnPhoto;
+
     public PhotosMenuDetailPager(Activity activity, ImageButton btnPhoto) {
         super(activity);
-        this.btnPhoto=btnPhoto;
+        this.btnPhoto = btnPhoto;
         btnPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    changeDisplay();
+                changeDisplay();
             }
         });
     }
-private boolean isListDiaplay=false;
+
+    private boolean isListDiaplay = false;
+
     private void changeDisplay() {
-        if(isListDiaplay){
+        if (isListDiaplay) {
             isListDiaplay = false;
             lvPhoto.setVisibility(View.VISIBLE);
             gvPhoto.setVisibility(View.INVISIBLE);
             btnPhoto.setImageResource(R.drawable.icon_pic_grid_type);
-        }else{
+        } else {
             isListDiaplay = true;
             lvPhoto.setVisibility(View.INVISIBLE);
             gvPhoto.setVisibility(View.VISIBLE);
@@ -92,7 +96,7 @@ private boolean isListDiaplay=false;
             public void onSuccess(ResponseInfo<String> responseInfo) {
                 String result = responseInfo.result;
                 parseData(result);
-                CacheUtils.setCache(GlobalConstant.PHOTOS_URL,result,mActivity);
+                CacheUtils.setCache(GlobalConstant.PHOTOS_URL, result, mActivity);
             }
 
             @Override
@@ -117,9 +121,12 @@ private boolean isListDiaplay=false;
 
     class PhotoAdapter extends BaseAdapter {
         private BitmapUtils bitmapUtils;
-        public PhotoAdapter(){
-            bitmapUtils=new BitmapUtils(mActivity);
-            bitmapUtils.configDefaultLoadingImage(R.drawable.news_pic_default);
+        private MyBitmapUtils myBitmapUtils;
+
+        public PhotoAdapter() {
+//            bitmapUtils=new BitmapUtils(mActivity);
+            myBitmapUtils = new MyBitmapUtils();
+//            bitmapUtils.configDefaultLoadingImage(R.drawable.news_pic_default);
         }
 
         @Override
@@ -138,22 +145,25 @@ private boolean isListDiaplay=false;
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(int i, View convertView, ViewGroup viewGroup) {
             ViewHolder holder;
-            if (view == null) {
+            if (convertView == null) {
                 holder = new ViewHolder();
-                View view1 = View.inflate(mActivity, R.layout.list_photo_item, null);
-                holder.title = (TextView) view1.findViewById(R.id.tv_title);
-                holder.image = (ImageView) view1.findViewById(R.id.iv_pic);
-                bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
+                convertView = View.inflate(mActivity, R.layout.list_photo_item, null);
+                holder.title = (TextView) convertView.findViewById(R.id.tv_title);
+                holder.image = (ImageView) convertView.findViewById(R.id.iv_pic);
+                myBitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
                 holder.title.setText(mPhotoList.get(i).title);
-                view1.setTag(holder);
-                return view1;
-            } else {
-                holder = (ViewHolder) view.getTag();
-            }
 
-            return view;
+                convertView.setTag(holder);
+                return convertView;
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            //                bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
+            myBitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
+            holder.title.setText(mPhotoList.get(i).title);
+            return convertView;
         }
 
     }

@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -31,6 +32,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
     private ArrayList<NewsData.NewsTabData> mTabMenuList;
     private ArrayList <TabDetailPager>mPagers;
     private TabPageIndicator indicator;
+    private ImageButton ib;
 
     public NewsMenuDetailPager(Activity activity, ArrayList<NewsData.NewsTabData> children) {
         super(activity);
@@ -39,6 +41,14 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
     @Override
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.news_menu_detail, null);
+        ib = (ImageButton) view.findViewById(R.id.ib_newt);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentItem = mViewPager.getCurrentItem();
+                mViewPager.setCurrentItem(++currentItem);
+            }
+        });
         mViewPager = (ViewPager) view.findViewById(R.id.vp_menu_pager);
         indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
         indicator.setOnPageChangeListener(this);
@@ -56,12 +66,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
         mViewPager.setAdapter(menuDetailAdapter);
         indicator.setViewPager(mViewPager);
     }
-    //跳转下一个页面
-    @OnClick(R.id.ib_newt)
-    public void nextPage(View view){
-        int currentItem = mViewPager.getCurrentItem();
-        mViewPager.setCurrentItem(++currentItem);
-    }
+
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

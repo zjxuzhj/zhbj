@@ -72,17 +72,14 @@ public class NewsDetailActivity extends Activity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_back:
-                finish();
-                break;
-            case R.id.btn_size:
-                showTextSizeDialog();
-                break;
-            case R.id.btn_share:
-                showShare();
-                break;
-        }
+       if(view.getId()==R.id.btn_back){
+           finish();
+       }else if(view.getId()==R.id.btn_size){
+           showTextSizeDialog();
+        }else if(view.getId()==R.id.btn_share){
+           showShare();
+       }
+
 
     }
 

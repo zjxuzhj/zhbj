@@ -24,7 +24,6 @@ import java.util.ArrayList;
 public class LeftMenuFragment extends BaseFragment {
     private int mCurrentPos;
     private NewsData menuData;
-    @ViewInject(R.id.lv_left_menu)
     ListView lvLeft;
     private ArrayList<NewsData.NewsMenuData> data1;
     private MyAdapter myAdapter;
@@ -33,6 +32,7 @@ public class LeftMenuFragment extends BaseFragment {
     public View initViews() {
         View view = View.inflate(getActivity(), R.layout.fragment_left_menu, null);
         ViewUtils.inject(this, view); //注入view和事件
+        lvLeft = (ListView) view.findViewById(R.id.lv_left_menu);
         return view;
     }
 

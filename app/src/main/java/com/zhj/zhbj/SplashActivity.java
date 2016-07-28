@@ -15,14 +15,32 @@ import android.widget.RelativeLayout;
 
 import com.zhj.zhbj.utils.PrefUtils;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class SplashActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
         initViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     private void initViews() {

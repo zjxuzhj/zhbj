@@ -24,16 +24,16 @@ import java.util.ArrayList;
  * Created by HongJay on 2016/7/8.
  */
 public class ContentFragment extends BaseFragment {
-    @ViewInject(R.id.rg_group)
     private RadioGroup rgGroup;
 
-    @ViewInject(R.id.vp_content)
     private ViewPager mViewPager;
     private ArrayList<BasePager> mPagerList;
 
     @Override
     public View initViews() {
         View view = View.inflate(getActivity(), R.layout.fragment_content, null);
+        rgGroup = (RadioGroup) view.findViewById(R.id.rg_group);
+        mViewPager = (ViewPager) view.findViewById(R.id.vp_content);
         ViewUtils.inject(this, view); //注入view和事件
 //        rgGroup = (RadioGroup) view.findViewById(R.id.rg_group);
         return view;
@@ -46,28 +46,21 @@ public class ContentFragment extends BaseFragment {
         rgGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
-                    case R.id.rb_home:
-                        mViewPager.setCurrentItem(0,false);//去掉切换页面的动画
-                        break;
-                    case R.id.rb_news:
-                        mViewPager.setCurrentItem(1,false);
-                        break;
-                    case R.id.rb_service:
-                        mViewPager.setCurrentItem(2,false);
-                        break;
-                    case R.id.rb_gov:
-                        mViewPager.setCurrentItem(3,false);
-                        break;
-                    case R.id.rb_setting:
-                        mViewPager.setCurrentItem(4,false);
-                        break;
-                    default:
-                        break;
+                if (i == R.id.rb_home) {
+                    mViewPager.setCurrentItem(0, false);//去掉切换页面的动画
+                } else if (i == R.id.rb_news) {
+                    mViewPager.setCurrentItem(1, false);
+                } else if (i == R.id.rb_service) {
+                    mViewPager.setCurrentItem(2, false);
+                } else if (i == R.id.rb_gov) {
+                    mViewPager.setCurrentItem(3, false);
+                } else if (i == R.id.rb_setting) {
+                    mViewPager.setCurrentItem(4, false);
                 }
+
             }
         });
-        mPagerList=new ArrayList<BasePager>();
+        mPagerList = new ArrayList<BasePager>();
         mPagerList.add(new HomePager(mActivity));
         mPagerList.add(new NewsCenterPager(mActivity));
         mPagerList.add(new SmartServicePager(mActivity));
@@ -94,7 +87,7 @@ public class ContentFragment extends BaseFragment {
         mViewPager.setAdapter(new ContentAdapter());
     }
 
-    class ContentAdapter extends PagerAdapter{
+    class ContentAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -103,12 +96,12 @@ public class ContentFragment extends BaseFragment {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view==object;
+            return view == object;
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            BasePager pager=mPagerList.get(position);
+            BasePager pager = mPagerList.get(position);
             container.addView(pager.mRootView);
 
             return pager.mRootView;
@@ -116,11 +109,12 @@ public class ContentFragment extends BaseFragment {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-           container.removeView((View)object);
+            container.removeView((View) object);
         }
     }
+
     //获取新闻中心页面
-    public NewsCenterPager getNewsCenterPager(){
-       return (NewsCenterPager) mPagerList.get(1);
+    public NewsCenterPager getNewsCenterPager() {
+        return (NewsCenterPager) mPagerList.get(1);
     }
 }
