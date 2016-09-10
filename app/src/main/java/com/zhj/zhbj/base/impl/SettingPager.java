@@ -22,7 +22,7 @@ public class SettingPager extends BasePager {
         System.out.println("初始化setting");
         setSlidingMenuEnable(false);
         tv_title.setText("设置");
-        btn_menu.setVisibility(View.GONE);
+//        btn_menu.setVisibility(View.GONE);
         TextView tv_content = new TextView(mActivity);
         tv_content.setText("设置");
         tv_content.setTextColor(Color.RED);

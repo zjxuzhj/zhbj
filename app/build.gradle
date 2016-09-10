@@ -25,7 +25,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.0.0'
-    compile project(':sliding_menu')
     compile project(path: ':xUtils_library')
     compile 'com.google.code.gson:gson:2.7'
     compile project(':viewPagerLibrary')

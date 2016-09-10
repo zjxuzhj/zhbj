@@ -21,7 +21,7 @@ public class HomePager extends BasePager {
     public void initData() {
         setSlidingMenuEnable(false);
         tv_title.setText("杭州知道");
-        btn_menu.setVisibility(View.GONE);
+//        btn_menu.setVisibility(View.GONE);
         TextView tv_content = new TextView(mActivity);
         tv_content.setText("首页");
         tv_content.setTextColor(Color.RED);

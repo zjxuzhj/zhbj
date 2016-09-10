@@ -13,9 +13,6 @@ import com.zhj.zhbj.base.BasePager;
 public class SmartServicePager extends BasePager {
     public SmartServicePager(Activity activity) {
         super(activity);
-
-
-
     }
 
     @Override

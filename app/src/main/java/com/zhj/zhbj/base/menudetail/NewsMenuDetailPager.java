@@ -1,21 +1,14 @@
 package com.zhj.zhbj.base.menudetail;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.viewpagerindicator.TabPageIndicator;
-import com.zhj.zhbj.MainActivity;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.base.BaseMenuDetailPager;
 import com.zhj.zhbj.base.TabDetailPager;
@@ -75,13 +68,13 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
 
     @Override
     public void onPageSelected(int position) {
-        MainActivity mainUi= (MainActivity) mActivity;
-        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
-        if(position==0){
-            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        }else{
-            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        }
+//        MainActivity mainUi= (MainActivity) mActivity;
+//        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
+//        if(position==0){
+//            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+//        }else{
+//            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+//        }
     }
 
     @Override

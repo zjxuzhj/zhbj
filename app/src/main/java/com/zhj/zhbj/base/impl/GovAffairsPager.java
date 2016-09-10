@@ -2,29 +2,175 @@ package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
+import com.zhj.zhbj.R;
 import com.zhj.zhbj.base.BasePager;
+import com.zhj.zhbj.base.menudetail.PhotosMenuDetailPager;
+import com.zhj.zhbj.domain.PhotosData;
+import com.zhj.zhbj.global.GlobalConstant;
+import com.zhj.zhbj.utils.CacheUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by HongJay on 2016/7/16.
  */
 public class GovAffairsPager extends BasePager {
+
+    private ArrayList<PhotosData.PhotoInfo> mPhotoList;
+    private PhotosData data;
+    private PhotoAdapter mAdapter;
+
+    private ListView lvPhoto;
+    private GridView gvPhoto;
+
     public GovAffairsPager(Activity activity) {
         super(activity);
+        initView();
+        btnPhoto.setVisibility(View.VISIBLE);
+        btnPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeDisplay();
+            }
+        });
+    }
+    private boolean isListDiaplay = false;
+
+    private void changeDisplay() {
+        if (isListDiaplay) {
+            isListDiaplay = false;
+            lvPhoto.setVisibility(View.VISIBLE);
+            gvPhoto.setVisibility(View.INVISIBLE);
+            btnPhoto.setImageResource(R.drawable.icon_pic_grid_type);
+        } else {
+            isListDiaplay = true;
+            lvPhoto.setVisibility(View.INVISIBLE);
+            gvPhoto.setVisibility(View.VISIBLE);
+            btnPhoto.setImageResource(R.drawable.icon_pic_list_type);
+        }
     }
 
     @Override
     public void initData() {
-        tv_title.setText("政务");
-        setSlidingMenuEnable(true);
-        TextView tv_content = new TextView(mActivity);
-        tv_content.setText("政务");
-        tv_content.setTextColor(Color.RED);
-        tv_content.setTextSize(25);
-        tv_content.setGravity(Gravity.CENTER);
+        tv_title.setText("组图");
 
-        fl_content.addView(tv_content);
+        String cache = CacheUtils.getCache(GlobalConstant.PHOTOS_URL, mActivity);
+        if (!TextUtils.isEmpty(cache)) {
+            parseData(cache);
+        }
+        getDataFromServer();
+        fl_content.addView(initView());
+    }
+
+    public View initView() {
+        View view = View.inflate(mActivity, R.layout.menu_photo_pager, null);
+        lvPhoto = (ListView) view.findViewById(R.id.lv_photo);
+        gvPhoto = (GridView) view.findViewById(R.id.gv_photo);
+        lvPhoto.setDividerHeight(0);
+
+        return view;
+    }
+
+
+    private void getDataFromServer() {
+        HttpUtils httpUtils = new HttpUtils();
+        httpUtils.send(HttpRequest.HttpMethod.GET, GlobalConstant.PHOTOS_URL, new RequestCallBack<String>() {
+            @Override
+            public void onSuccess(ResponseInfo<String> responseInfo) {
+                String result = responseInfo.result;
+                parseData(result);
+                CacheUtils.setCache(GlobalConstant.PHOTOS_URL, result, mActivity);
+            }
+
+            @Override
+            public void onFailure(HttpException error, String msg) {
+                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+    }
+
+    private void parseData(String result) {
+        Gson gson = new Gson();
+        data = gson.fromJson(result, PhotosData.class);
+        //获取组图列表集合
+        mPhotoList = data.data.news;
+        if (mPhotoList != null) {
+            mAdapter = new PhotoAdapter();
+            lvPhoto.setAdapter(mAdapter);
+            gvPhoto.setAdapter(mAdapter);
+        }
+    }
+
+    class PhotoAdapter extends BaseAdapter {
+        private BitmapUtils bitmapUtils;
+
+
+        public PhotoAdapter() {
+            bitmapUtils=new BitmapUtils(mActivity);
+
+            bitmapUtils.configDefaultLoadingImage(R.drawable.news_pic_default);
+        }
+
+        @Override
+        public int getCount() {
+            return mPhotoList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return mPhotoList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View convertView, ViewGroup viewGroup) {
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = View.inflate(mActivity, R.layout.list_photo_item, null);
+                holder.title = (TextView) convertView.findViewById(R.id.tv_title);
+                holder.image = (ImageView) convertView.findViewById(R.id.iv_pic);
+                bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
+                holder.title.setText(mPhotoList.get(i).title);
+
+                convertView.setTag(holder);
+                return convertView;
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
+            holder.title.setText(mPhotoList.get(i).title);
+            return convertView;
+        }
+
+    }
+
+    public static class ViewHolder {
+        public TextView title;
+        public ImageView image;
     }
 }

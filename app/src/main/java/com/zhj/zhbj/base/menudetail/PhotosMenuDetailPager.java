@@ -44,6 +44,7 @@ public class PhotosMenuDetailPager extends BaseMenuDetailPager {
     private ImageButton btnPhoto;
 
     public PhotosMenuDetailPager(Activity activity, ImageButton btnPhoto) {
+
         super(activity);
         this.btnPhoto = btnPhoto;
         btnPhoto.setOnClickListener(new View.OnClickListener() {
@@ -121,12 +122,12 @@ public class PhotosMenuDetailPager extends BaseMenuDetailPager {
 
     class PhotoAdapter extends BaseAdapter {
         private BitmapUtils bitmapUtils;
-        private MyBitmapUtils myBitmapUtils;
+
 
         public PhotoAdapter() {
-//            bitmapUtils=new BitmapUtils(mActivity);
-            myBitmapUtils = new MyBitmapUtils();
-//            bitmapUtils.configDefaultLoadingImage(R.drawable.news_pic_default);
+            bitmapUtils=new BitmapUtils(mActivity);
+
+            bitmapUtils.configDefaultLoadingImage(R.drawable.news_pic_default);
         }
 
         @Override
@@ -152,7 +153,7 @@ public class PhotosMenuDetailPager extends BaseMenuDetailPager {
                 convertView = View.inflate(mActivity, R.layout.list_photo_item, null);
                 holder.title = (TextView) convertView.findViewById(R.id.tv_title);
                 holder.image = (ImageView) convertView.findViewById(R.id.iv_pic);
-                myBitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
+                bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
                 holder.title.setText(mPhotoList.get(i).title);
 
                 convertView.setTag(holder);
@@ -160,8 +161,7 @@ public class PhotosMenuDetailPager extends BaseMenuDetailPager {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            //                bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
-            myBitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
+            bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
             holder.title.setText(mPhotoList.get(i).title);
             return convertView;
         }

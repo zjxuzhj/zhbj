@@ -12,40 +12,53 @@
         android:layout_weight="1" />
 
     <RadioGroup
+
         android:id="@+id/rg_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="1dp"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/rb_home"
             style="@style/BottomTabStyle"
             android:checked="true"
+            android:textSize="12sp"
+            android:drawablePadding="1dp"
             android:drawableTop="@drawable/btn_tab_home_selector"
             android:text="首页" />
 
         <RadioButton
             android:id="@+id/rb_news"
             style="@style/BottomTabStyle"
+            android:textSize="12sp"
+            android:drawablePadding="1dp"
             android:drawableTop="@drawable/btn_tab_news_selector"
             android:text="新闻中心" />
 
         <RadioButton
             android:id="@+id/rb_service"
             style="@style/BottomTabStyle"
+            android:textSize="12sp"
             android:drawableTop="@drawable/btn_tab_service_selector"
-            android:text="智慧服务" />
+            android:text="智慧服务"
+            android:drawablePadding="1dp"
+            android:layout_height="wrap_content"
+            android:checked="false"/>
 
         <RadioButton
             android:id="@+id/rb_gov"
             style="@style/BottomTabStyle"
+            android:textSize="12sp"
             android:drawableTop="@drawable/btn_tab_gov_selector"
-            android:text="政务" />
+            android:drawablePadding="1dp"
+            android:text="组图" />
 
         <RadioButton
             android:id="@+id/rb_setting"
             style="@style/BottomTabStyle"
+            android:textSize="12sp"
+            android:drawablePadding="1dp"
             android:drawableTop="@drawable/btn_tab_setting_selector"
             android:text="设置" />
 

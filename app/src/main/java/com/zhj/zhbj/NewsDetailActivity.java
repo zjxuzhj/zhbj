@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebSettings;
@@ -20,7 +21,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 /**
  * Created by HongJay on 2016/7/25.
  */
-public class NewsDetailActivity extends Activity implements View.OnClickListener {
+public class NewsDetailActivity extends AppCompatActivity implements View.OnClickListener {
     private WebView mWebView;
     private ImageButton btnBack;
     private ImageButton btnSize;

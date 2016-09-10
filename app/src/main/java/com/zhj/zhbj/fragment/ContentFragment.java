@@ -28,9 +28,11 @@ public class ContentFragment extends BaseFragment {
 
     private ViewPager mViewPager;
     private ArrayList<BasePager> mPagerList;
+    private ContentAdapter mContentAdapter;
 
     @Override
     public View initViews() {
+        mContentAdapter=new ContentAdapter();
         View view = View.inflate(getActivity(), R.layout.fragment_content, null);
         rgGroup = (RadioGroup) view.findViewById(R.id.rg_group);
         mViewPager = (ViewPager) view.findViewById(R.id.vp_content);
@@ -84,7 +86,7 @@ public class ContentFragment extends BaseFragment {
             }
         });
         mPagerList.get(0).initData();
-        mViewPager.setAdapter(new ContentAdapter());
+        mViewPager.setAdapter(mContentAdapter);
     }
 
     class ContentAdapter extends PagerAdapter {

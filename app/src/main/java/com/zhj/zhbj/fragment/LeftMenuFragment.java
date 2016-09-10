@@ -8,9 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.zhj.zhbj.MainActivity;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.base.impl.NewsCenterPager;
@@ -44,16 +42,16 @@ public class LeftMenuFragment extends BaseFragment {
                 mCurrentPos = i;
                 myAdapter.notifyDataSetChanged();
                 setCurrentMenuDetailPager(i);
-                toogleSlidingMenu();
+//                toogleSlidingMenu();
             }
         });
     }
 
-    private void toogleSlidingMenu() {
-        MainActivity mainUi= (MainActivity) mActivity;
-        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
-        slidingMenu.toggle();//切换状态
-    }
+//    private void toogleSlidingMenu() {
+//        MainActivity mainUi= (MainActivity) mActivity;
+//        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
+//        slidingMenu.toggle();//切换状态
+//    }
 
     protected void setCurrentMenuDetailPager(int position) {
         MainActivity mainUi= (MainActivity) mActivity;

@@ -75,15 +75,15 @@ public class NewsCenterPager extends BasePager {
     protected void parseData(String result) {
         Gson gson = new Gson();
         newsData = gson.fromJson(result, NewsData.class);
-        MainActivity mainUi = (MainActivity) mActivity;
-        LeftMenuFragment leftFragment = mainUi.getLeftFragment();
-        leftFragment.setMenuData(newsData);
+//        MainActivity mainUi = (MainActivity) mActivity;
+//        LeftMenuFragment leftFragment = mainUi.getLeftFragment();
+//        leftFragment.setMenuData(newsData);
 
         //准备四个菜单详情页
         basePagersList = new ArrayList<BaseMenuDetailPager>();
         basePagersList.add(new NewsMenuDetailPager(mActivity, newsData.data.get(0).children));
         basePagersList.add(new TopicMenuDetailPager(mActivity));
-        basePagersList.add(new PhotosMenuDetailPager(mActivity,btnPhoto));
+//        basePagersList.add(new PhotosMenuDetailPager(mActivity,btnPhoto));
         basePagersList.add(new InteractMenuDetailPager(mActivity));
         setCurrentMenuDetailPager(0);
     }
@@ -98,10 +98,10 @@ public class NewsCenterPager extends BasePager {
         tv_title.setText(newsMenuData.title);
         pager.initData();//初始化当前页面的数据
 
-        if(pager instanceof  PhotosMenuDetailPager){
-            btnPhoto.setVisibility(View.VISIBLE);
-        }else{
-            btnPhoto.setVisibility(View.GONE);
-        }
+//        if(pager instanceof  PhotosMenuDetailPager){
+//            btnPhoto.setVisibility(View.VISIBLE);
+//        }else{
+//            btnPhoto.setVisibility(View.GONE);
+//        }
     }
 }
