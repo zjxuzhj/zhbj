@@ -72,7 +72,7 @@ public class GovAffairsPager extends BasePager {
     @Override
     public void initData() {
         tv_title.setText("组图");
-
+        fl_content.removeAllViews();
         String cache = CacheUtils.getCache(GlobalConstant.PHOTOS_URL, mActivity);
         if (!TextUtils.isEmpty(cache)) {
             parseData(cache);

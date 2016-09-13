@@ -43,6 +43,7 @@ public class ContentFragment extends BaseFragment {
 
     @Override
     public void initData() {
+
         rgGroup.check(R.id.rb_home);
 
         rgGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -63,12 +64,16 @@ public class ContentFragment extends BaseFragment {
             }
         });
         mPagerList = new ArrayList<BasePager>();
-        mPagerList.add(new HomePager(mActivity));
-        mPagerList.add(new NewsCenterPager(mActivity));
-        mPagerList.add(new SmartServicePager(mActivity));
-        mPagerList.add(new GovAffairsPager(mActivity));
-        mPagerList.add(new SettingPager(mActivity));
 
+        mPagerList.add(new NewsCenterPager(mActivity));
+        mPagerList.add(new GovAffairsPager(mActivity));
+        mPagerList.add(new SmartServicePager(mActivity));
+//        mPagerList.add(new HomePager(mActivity));
+        mPagerList.add(new NewsCenterPager(mActivity));
+        mPagerList.add(new HomePager(mActivity));
+
+//        mPagerList.add(new SettingPager(mActivity));
+        mPagerList.get(1).initData();
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -85,7 +90,7 @@ public class ContentFragment extends BaseFragment {
 
             }
         });
-        mPagerList.get(0).initData();
+
         mViewPager.setAdapter(mContentAdapter);
     }
 
