@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion '24.0.0'
     defaultConfig {
         applicationId "com.zhj.zhbj"
         minSdkVersion 15
@@ -25,7 +25,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.0.0'
-    compile project(path: ':xUtils_library')
     compile 'com.google.code.gson:gson:2.7'
     compile project(':viewPagerLibrary')
     compile files('libs/MobCommons-2016.0707.1708.jar')
@@ -40,4 +39,6 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Favorite-2.7.4.jar')
     compile files('libs/ShareSDK-Wechat-Moments-2.7.4.jar')
     compile files('libs/jpush-android-2.1.7.jar')
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile project(':xUtils_library')
 }

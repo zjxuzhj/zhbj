@@ -15,7 +15,7 @@ public class NoScrollViewPager extends ViewPager {
     }
 
     public NoScrollViewPager(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(context,  attrs);
     }
 
     //表示事件是否拦截，返回false表示不拦截
