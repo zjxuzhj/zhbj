@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +25,8 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.viewpagerindicator.CirclePageIndicator;
-import com.zhj.zhbj.NewsDetailActivity;
+import com.zhj.zhbj.activity.NewsDetailActivity;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.domain.NewsData;
 import com.zhj.zhbj.domain.TabData;
@@ -216,11 +214,11 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
                         vpTabDetail.setCurrentItem(currentItem); //切换到下一个页面
 
-                        handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
+//                        handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
                     };
                 };
 
-            handler.sendEmptyMessageDelayed(0, 3000);
+//            handler.sendEmptyMessageDelayed(0, 3000);
             }
         } else {
             ArrayList<TabData.TabDetailData.TabNewsData> news = mTabData1.data.news;
@@ -293,10 +291,10 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                     handler.removeMessages(0);
                     break;
                 case MotionEvent.ACTION_CANCEL:
-                    handler.sendEmptyMessageDelayed(0, 3000);
+//                    handler.sendEmptyMessageDelayed(0, 3000);
                     break;
                 case MotionEvent.ACTION_UP:
-                    handler.sendEmptyMessageDelayed(0, 3000);
+//                    handler.sendEmptyMessageDelayed(0, 3000);
                     break;
             }
 

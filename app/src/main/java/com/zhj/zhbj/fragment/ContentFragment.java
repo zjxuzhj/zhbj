@@ -8,14 +8,11 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.zhj.zhbj.MainActivity;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.base.BasePager;
 import com.zhj.zhbj.base.impl.GovAffairsPager;
 import com.zhj.zhbj.base.impl.HomePager;
 import com.zhj.zhbj.base.impl.NewsCenterPager;
-import com.zhj.zhbj.base.impl.SettingPager;
 import com.zhj.zhbj.base.impl.SmartServicePager;
 
 import java.util.ArrayList;

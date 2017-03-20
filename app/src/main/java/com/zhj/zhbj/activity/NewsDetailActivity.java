@@ -1,11 +1,9 @@
-package com.zhj.zhbj;
+package com.zhj.zhbj.activity;
 
-import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +12,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+
+import com.zhj.zhbj.R;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -73,13 +73,13 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-       if(view.getId()==R.id.btn_back){
-           finish();
-       }else if(view.getId()==R.id.btn_size){
-           showTextSizeDialog();
-        }else if(view.getId()==R.id.btn_share){
-           showShare();
-       }
+        if (view.getId() == R.id.btn_back) {
+            finish();
+        } else if (view.getId() == R.id.btn_size) {
+            showTextSizeDialog();
+        } else if (view.getId() == R.id.btn_share) {
+            showShare();
+        }
 
 
     }

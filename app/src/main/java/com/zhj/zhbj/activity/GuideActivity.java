@@ -1,24 +1,19 @@
-package com.zhj.zhbj;
+package com.zhj.zhbj.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.icu.util.IndianCalendar;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.viewpagerindicator.CirclePageIndicator;
+import com.zhj.zhbj.R;
 import com.zhj.zhbj.utils.PrefUtils;
 
 import java.util.ArrayList;

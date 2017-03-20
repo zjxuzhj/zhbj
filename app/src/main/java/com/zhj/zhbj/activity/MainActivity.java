@@ -1,12 +1,18 @@
-package com.zhj.zhbj;
+package com.zhj.zhbj.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
+import android.widget.Toast;
 
+import com.zhj.zhbj.R;
+import com.zhj.zhbj.entry.Person;
 import com.zhj.zhbj.fragment.ContentFragment;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class MainActivity extends FragmentActivity {
     private static final String FRAGMENT_LEFT_MENU = "fragment_left_menu";
@@ -18,11 +24,19 @@ public class MainActivity extends FragmentActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-//        setBehindContentView(R.layout.menu_left);
-//        SlidingMenu slidingMenu = getSlidingMenu();
-//        slidingMenu.setMode(SlidingMenu.LEFT);
-//        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-//        slidingMenu.setBehindOffset(700);
+        Person p2 = new Person();
+        p2.setName("lucky");
+        p2.setAddress("北京海淀");
+        p2.save(new SaveListener<String>() {
+            @Override
+            public void done(String objectId,BmobException e) {
+                if(e==null){
+                    Toast.makeText(MainActivity.this,"添加数据成功，返回objectId为：" + objectId,Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this,"创建数据失败：" + e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         initFragment();
     }
@@ -38,13 +52,7 @@ public class MainActivity extends FragmentActivity {
         ft.commit();
 
     }
-//获取侧边栏对象
-//    public LeftMenuFragment getLeftFragment(){
-//        FragmentManager fm = getSupportFragmentManager();
-//        LeftMenuFragment fragment = (LeftMenuFragment) fm.findFragmentByTag(FRAGMENT_LEFT_MENU);
-//        return fragment;
 
-//    }
     //获取内容对象
     public ContentFragment getContentFragment(){
         FragmentManager fm = getSupportFragmentManager();

@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lidroid.xutils.ViewUtils;
-import com.zhj.zhbj.MainActivity;
+import com.zhj.zhbj.activity.MainActivity;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.base.impl.NewsCenterPager;
 import com.zhj.zhbj.domain.NewsData;
@@ -42,16 +42,9 @@ public class LeftMenuFragment extends BaseFragment {
                 mCurrentPos = i;
                 myAdapter.notifyDataSetChanged();
                 setCurrentMenuDetailPager(i);
-//                toogleSlidingMenu();
             }
         });
     }
-
-//    private void toogleSlidingMenu() {
-//        MainActivity mainUi= (MainActivity) mActivity;
-//        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
-//        slidingMenu.toggle();//切换状态
-//    }
 
     protected void setCurrentMenuDetailPager(int position) {
         MainActivity mainUi= (MainActivity) mActivity;

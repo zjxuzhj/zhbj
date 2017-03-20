@@ -2,7 +2,6 @@ package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -11,15 +10,12 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
-import com.zhj.zhbj.MainActivity;
 import com.zhj.zhbj.base.BaseMenuDetailPager;
 import com.zhj.zhbj.base.BasePager;
 import com.zhj.zhbj.base.menudetail.InteractMenuDetailPager;
 import com.zhj.zhbj.base.menudetail.NewsMenuDetailPager;
-import com.zhj.zhbj.base.menudetail.PhotosMenuDetailPager;
 import com.zhj.zhbj.base.menudetail.TopicMenuDetailPager;
 import com.zhj.zhbj.domain.NewsData;
-import com.zhj.zhbj.fragment.LeftMenuFragment;
 import com.zhj.zhbj.global.GlobalConstant;
 import com.zhj.zhbj.utils.CacheUtils;
 

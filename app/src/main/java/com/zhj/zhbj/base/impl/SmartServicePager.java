@@ -18,7 +18,6 @@ public class SmartServicePager extends BasePager {
     @Override
     public void initData() {
         tv_title.setText("智慧服务");
-        setSlidingMenuEnable(true);
         TextView tv_content = new TextView(mActivity);
         tv_content.setText("智慧服务");
         tv_content.setTextColor(Color.RED);

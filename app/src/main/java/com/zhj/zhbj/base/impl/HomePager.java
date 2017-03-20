@@ -24,7 +24,6 @@ public class HomePager extends BasePager {
 
     @Override
     public void initData() {
-        setSlidingMenuEnable(false);
         /*tv_title.setText("组图");
 //        btn_menu.setVisibility(View.GONE);
         TextView tv_content = new TextView(mActivity);

@@ -20,7 +20,6 @@ public class SettingPager extends BasePager {
     @Override
     public void initData() {
         System.out.println("初始化setting");
-        setSlidingMenuEnable(false);
         tv_title.setText("设置");
 //        btn_menu.setVisibility(View.GONE);
         TextView tv_content = new TextView(mActivity);
