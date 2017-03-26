@@ -1,15 +1,17 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 24
-    buildToolsVersion '24.0.0'
+    buildToolsVersion '24.0.2'
     defaultConfig {
         applicationId "com.zhj.zhbj"
         minSdkVersion 15
-        targetSdkVersion 19
+        targetSdkVersion 22
         versionCode 1
-        versionName "10"
+        versionName "1.0"
     }
     buildTypes {
         release {
@@ -41,5 +43,8 @@ dependencies {
     compile project(':xUtils_library')
     //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
     //3.5.0：请务必查看下面注释[1]
-    compile ('cn.bmob.android:bmob-sdk:3.5.0')
+    compile 'cn.bmob.android:bmob-sdk:3.5.0'
+    compile 'com.android.support:design:24.0.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }

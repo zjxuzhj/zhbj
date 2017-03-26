@@ -68,7 +68,6 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     public View initViews() {
         View view = View.inflate(mActivity, R.layout.tab_detail_pager, null);
 
-
         mLvList = (RefreshListView) view.findViewById(R.id.lv_tab_detail);
         //加载头布局
         View headerView = View.inflate(mActivity, R.layout.list_header_topnews, null);

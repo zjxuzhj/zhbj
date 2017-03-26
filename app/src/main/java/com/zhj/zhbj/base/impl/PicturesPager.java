@@ -33,7 +33,7 @@ import okhttp3.Response;
 /**
  * Created by HongJay on 2016/7/16.
  */
-public class GovAffairsPager extends BasePager {
+public class PicturesPager extends BasePager {
 
     private ArrayList<PhotosData.PhotoInfo> mPhotoList;
     private PhotosData data;
@@ -42,7 +42,7 @@ public class GovAffairsPager extends BasePager {
     private ListView lvPhoto;
     private GridView gvPhoto;
 
-    public GovAffairsPager(Activity activity) {
+    public PicturesPager(Activity activity) {
         super(activity);
         initView();
         btnPhoto.setVisibility(View.VISIBLE);

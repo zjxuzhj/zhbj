@@ -1,4 +1,4 @@
-package com.zhj.zhbj.base.menudetail;
+package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;

@@ -18,6 +18,9 @@ import com.zhj.zhbj.utils.PrefUtils;
 
 import java.util.ArrayList;
 
+/**
+ * 指南页面，第一次显示
+ */
 public class GuideActivity extends AppCompatActivity {
     private LinearLayout ll_point;
     private View view_red_point;

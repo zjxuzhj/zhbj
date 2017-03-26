@@ -15,6 +15,9 @@ import com.zhj.zhbj.R;
 import cn.bmob.v3.Bmob;
 import cn.jpush.android.api.JPushInterface;
 
+/**
+ * 闪屏页
+ */
 public class SplashActivity extends AppCompatActivity {
 
     Handler mHandler=new Handler() ;
@@ -37,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },2000);
+        },0);
     }
 
     @Override

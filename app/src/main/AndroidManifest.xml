@@ -21,7 +21,10 @@
         <activity android:name=".activity.MainActivity"
             android:theme="@style/Theme.PageIndicatorDefaults"/>
         <activity android:name=".activity.GuideActivity" />
-        <activity android:name=".activity.NewsDetailActivity"></activity>
+        <activity android:name=".activity.NewsDetailActivity"/>
+        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.SignupActivity"/>
+
 
         <!-- shareSDK-->
         <activity

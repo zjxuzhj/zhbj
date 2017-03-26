@@ -1,33 +1,49 @@
 package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.view.Gravity;
+import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.zhj.zhbj.R;
+import com.zhj.zhbj.activity.LoginActivity;
 import com.zhj.zhbj.base.BasePager;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static cn.bmob.v3.Bmob.getApplicationContext;
 
 /**
  * Created by HongJay on 2016/7/16.
  */
 public class SettingPager extends BasePager {
-    public SettingPager(Activity activity) {
 
+    @BindView(R.id.tv_login)
+    TextView mTvLogin;
+    private Activity mActivity;
+
+    public SettingPager(Activity activity) {
         super(activity);
+        this.mActivity = activity;
     }
 
     @Override
     public void initData() {
-        System.out.println("初始化setting");
-        tv_title.setText("设置");
-//        btn_menu.setVisibility(View.GONE);
-        TextView tv_content = new TextView(mActivity);
-        tv_content.setText("设置");
-        tv_content.setTextColor(Color.RED);
-        tv_content.setTextSize(25);
-        tv_content.setGravity(Gravity.CENTER);
+        LayoutInflater lInflater = (LayoutInflater) mActivity.getSystemService(
+                Activity.LAYOUT_INFLATER_SERVICE);
 
-        fl_content.addView(tv_content);
+        View view = lInflater.inflate(R.layout.activity_setting, null);
+        ButterKnife.bind(this, view);
+        fl_content.addView(view);
+        mTvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                mActivity.startActivity(intent);
+            }
+        });
     }
+
 }
