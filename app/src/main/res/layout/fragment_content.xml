@@ -1,15 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <com.zhj.zhbj.view.NoScrollViewPager
         android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
     <RadioGroup
 
@@ -23,34 +21,34 @@
             android:id="@+id/rb_home"
             style="@style/BottomTabStyle"
             android:checked="true"
-            android:textSize="12sp"
             android:drawablePadding="1dp"
             android:drawableTop="@drawable/btn_tab_home_selector"
-            android:text="首页" />
+            android:text="首页"
+            android:textSize="12sp"/>
 
         <RadioButton
             android:id="@+id/rb_news"
             style="@style/BottomTabStyle"
-            android:textSize="12sp"
             android:drawablePadding="1dp"
             android:drawableTop="@drawable/btn_tab_news_selector"
-            android:text="新闻中心" />
+            android:text="新闻中心"
+            android:textSize="12sp"/>
 
         <RadioButton
             android:id="@+id/rb_picture"
             style="@style/BottomTabStyle"
-            android:textSize="12sp"
-            android:drawableTop="@drawable/btn_tab_gov_selector"
             android:drawablePadding="1dp"
-            android:text="组图" />
+            android:drawableTop="@drawable/btn_tab_gov_selector"
+            android:text="组图"
+            android:textSize="12sp"/>
 
         <RadioButton
             android:id="@+id/rb_setting"
             style="@style/BottomTabStyle"
-            android:textSize="12sp"
             android:drawablePadding="1dp"
             android:drawableTop="@drawable/btn_tab_setting_selector"
-            android:text="设置" />
+            android:text="设置"
+            android:textSize="12sp"/>
 
 
     </RadioGroup>

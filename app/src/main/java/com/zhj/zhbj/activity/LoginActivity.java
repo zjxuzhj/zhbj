@@ -14,9 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhj.zhbj.R;
+import com.zhj.zhbj.domain.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.LogInListener;
 
 /**
  * 登陆页面
@@ -32,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     AppCompatButton _loginButton;
     @BindView(R.id.link_signup)
     TextView _signupLink;
+    private User mUserInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,19 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                login();
+//                login();
+
+                BmobUser.loginByAccount("admin", "123456", new LogInListener<User>() {
+
+                    @Override
+                    public void done(User user, BmobException e) {
+                        if (user != null) {
+                            Log.i("smile", "用户登陆成功");
+                            mUserInfo = BmobUser.getCurrentUser(User.class);
+
+                        }
+                    }
+                });
             }
         });
 
@@ -117,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "登陆失败！", Toast.LENGTH_LONG).show();
 
         _loginButton.setEnabled(true);
     }

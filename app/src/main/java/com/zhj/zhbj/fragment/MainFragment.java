@@ -10,9 +10,9 @@ import android.widget.RadioGroup;
 import com.lidroid.xutils.ViewUtils;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.base.BasePager;
+import com.zhj.zhbj.base.impl.NewsCenterPager;
 import com.zhj.zhbj.base.impl.PicturesPager;
 import com.zhj.zhbj.base.impl.SettingPager;
-import com.zhj.zhbj.base.impl.NewsCenterPager;
 
 import java.util.ArrayList;
 

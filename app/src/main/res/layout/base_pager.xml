@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="44dp"
         android:background="@drawable/title_red_bg">
 
         <TextView
@@ -18,17 +18,6 @@
             android:text="杭州知道"
             android:textColor="#fff"
             android:textSize="20dp" />
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/btn_menu"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="5dp"-->
-            <!--android:background="@null"-->
-            <!--android:src="@drawable/img_menu"-->
-
-            <!--/>-->
 
         <ImageButton
             android:id="@+id/btn_photo"

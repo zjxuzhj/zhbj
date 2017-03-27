@@ -19,8 +19,9 @@ import com.zhj.zhbj.utils.CacheUtils;
 import java.util.ArrayList;
 
 /**
- * Created by HongJay on 2016/7/16.
+ * Created by HongJay on 2017/3/27.
  */
+
 public class NewsCenterPager extends BasePager {
     private ArrayList<BaseMenuDetailPager> basePagersList;
     private NewsData newsData;
