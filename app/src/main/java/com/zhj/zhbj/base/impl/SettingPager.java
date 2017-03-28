@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.activity.LoginActivity;
+import com.zhj.zhbj.activity.MainActivity;
 import com.zhj.zhbj.base.BasePager;
 
 import butterknife.BindView;
@@ -24,9 +25,11 @@ public class SettingPager extends BasePager {
     TextView mTvLogin;
     private Activity mActivity;
 
+
     public SettingPager(Activity activity) {
         super(activity);
         this.mActivity = activity;
+
     }
 
     @Override
@@ -41,9 +44,11 @@ public class SettingPager extends BasePager {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                mActivity.startActivity(intent);
+                mActivity.startActivityForResult(intent,1);
             }
         });
     }
-
+    public void setLogIn() {
+        mTvLogin.setVisibility(View.GONE);
+    }
 }

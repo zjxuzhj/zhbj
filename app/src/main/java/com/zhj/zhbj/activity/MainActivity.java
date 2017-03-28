@@ -12,7 +12,7 @@ import com.zhj.zhbj.fragment.MainFragment;
 /**
  * 主页面，用来放fragment
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements  MainFragment.OnLogInListener, MainFragment.OnLogOutListener{
     private static final String FRAGMENT_CONTENT= "fragment_content";
 
     @Override
@@ -54,4 +54,13 @@ public class MainActivity extends FragmentActivity {
         return fragment;
     }
 
+    @Override
+    public void setOnLogInListener() {
+
+    }
+
+    @Override
+    public void setOnLogOutListener() {
+
+    }
 }

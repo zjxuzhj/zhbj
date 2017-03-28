@@ -14,7 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhj.zhbj.R;
+import com.zhj.zhbj.base.impl.SettingPager;
 import com.zhj.zhbj.domain.User;
+import com.zhj.zhbj.fragment.MainFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +27,7 @@ import cn.bmob.v3.listener.LogInListener;
 /**
  * 登陆页面
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements MainFragment.OnLogInListener, MainFragment.OnLogOutListener {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     @BindView(R.id.input_email)
@@ -56,8 +58,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void done(User user, BmobException e) {
                         if (user != null) {
                             Log.i("smile", "用户登陆成功");
-                            mUserInfo = BmobUser.getCurrentUser(User.class);
-
+                            setOnLogInListener();
+                        }else{
+                            Log.i("smile", "用户登陆失败");
                         }
                     }
                 });
@@ -76,6 +79,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void setOnLogInListener() {
+        onLoginSuccess();
+
+    }
+
+    @Override
+    public void setOnLogOutListener() {
+
+    }
+
 
     public void login() {
         Log.d(TAG, "Login");
@@ -129,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
     public void onLoginSuccess() {
+        mUserInfo = BmobUser.getCurrentUser(User.class);
         _loginButton.setEnabled(true);
         finish();
     }
@@ -161,4 +177,5 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
+
 }

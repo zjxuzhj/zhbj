@@ -1,8 +1,10 @@
 package com.zhj.zhbj.fragment;
 
 
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
@@ -35,10 +37,22 @@ public class MainFragment extends BaseFragment {
         ViewUtils.inject(this, view); //注入view和事件
         return view;
     }
+    public interface OnLogInListener {
+        void setOnLogInListener();
+    }
 
+    public interface OnLogOutListener {
+        void setOnLogOutListener();
+    }
     @Override
     public void initData() {
+        try {
+            loginInListener = (OnLogInListener) mActivity;
+            logOutListener =  (OnLogOutListener)mActivity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(mActivity.toString() + " must implement OnLoginInListener");
 
+        }
         rgGroup.check(R.id.rb_home);
 
         rgGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -82,6 +96,28 @@ public class MainFragment extends BaseFragment {
         });
 
         mViewPager.setAdapter(mContentAdapter);
+
+    }
+    private OnLogInListener loginInListener;
+    private OnLogOutListener logOutListener;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            //正常登陆后回调
+            case 1:
+                setLogIn();
+                loginInListener.setOnLogInListener();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void setLogIn() {
+        ((SettingPager)mPagerList.get(3)).setLogIn();
     }
 
     class ContentAdapter extends PagerAdapter {
