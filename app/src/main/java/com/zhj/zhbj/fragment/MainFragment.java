@@ -106,7 +106,7 @@ public class MainFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             //正常登陆后回调
-            case 1:
+            case 2:
                 setLogIn();
                 loginInListener.setOnLogInListener();
                 break;

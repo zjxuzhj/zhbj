@@ -146,6 +146,9 @@ public class LoginActivity extends AppCompatActivity implements MainFragment.OnL
     public void onLoginSuccess() {
         mUserInfo = BmobUser.getCurrentUser(User.class);
         _loginButton.setEnabled(true);
+        Intent intent = new Intent();
+        intent.putExtra("NUll", "");
+        setResult(2, intent);
         finish();
     }
 

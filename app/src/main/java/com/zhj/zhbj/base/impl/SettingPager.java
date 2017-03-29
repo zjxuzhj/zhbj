@@ -44,7 +44,7 @@ public class SettingPager extends BasePager {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                mActivity.startActivityForResult(intent,1);
+                ((MainActivity)mActivity).getContentFragment().startActivityForResult(intent,1);
             }
         });
     }
