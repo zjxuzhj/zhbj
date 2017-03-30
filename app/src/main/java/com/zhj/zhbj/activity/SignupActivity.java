@@ -26,10 +26,6 @@ public class SignupActivity extends AppCompatActivity {
     EditText _nameText;
     @BindView(R.id.input_address)
     EditText _addressText;
-    @BindView(R.id.input_email)
-    EditText _emailText;
-    @BindView(R.id.input_mobile)
-    EditText _mobileText;
     @BindView(R.id.input_password)
     EditText _passwordText;
     @BindView(R.id.input_reEnterPassword)
@@ -82,8 +78,6 @@ public class SignupActivity extends AppCompatActivity {
 
         String name = _nameText.getText().toString();
         String address = _addressText.getText().toString();
-        String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
@@ -119,49 +113,32 @@ public class SignupActivity extends AppCompatActivity {
 
         String name = _nameText.getText().toString();
         String address = _addressText.getText().toString();
-        String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
+            _nameText.setError("至少三个字符");
             valid = false;
         } else {
             _nameText.setError(null);
         }
 
         if (address.isEmpty()) {
-            _addressText.setError("Enter Valid Address");
+            _addressText.setError("当前地址为空");
             valid = false;
         } else {
             _addressText.setError(null);
         }
 
-
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
-            valid = false;
-        } else {
-            _emailText.setError(null);
-        }
-
-        if (mobile.isEmpty() || mobile.length() != 10) {
-            _mobileText.setError("Enter Valid Mobile Number");
-            valid = false;
-        } else {
-            _mobileText.setError(null);
-        }
-
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            _passwordText.setError("密码长度大于四，小于十");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
 
         if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
-            _reEnterPasswordText.setError("Password Do not match");
+            _reEnterPasswordText.setError("两次密码不相同");
             valid = false;
         } else {
             _reEnterPasswordText.setError(null);

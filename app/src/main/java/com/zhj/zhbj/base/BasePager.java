@@ -24,11 +24,11 @@ public class BasePager {
 
     public BasePager(Activity activity) {
         mActivity = activity;
-        initViews();
+        initBaseViews();
     }
 
     //初始化布局
-    public void initViews() {
+    public void initBaseViews() {
         mRootView = View.inflate(mActivity, R.layout.base_pager, null);
         tv_title = (TextView) mRootView.findViewById(R.id.tv_title);
         fl_content = (FrameLayout) mRootView.findViewById(R.id.fl_content);

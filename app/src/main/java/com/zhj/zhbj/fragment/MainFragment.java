@@ -1,10 +1,15 @@
 package com.zhj.zhbj.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
@@ -20,15 +25,31 @@ import java.util.ArrayList;
 
 /**
  * Created by HongJay on 2016/7/8.
+ * 主页四个页面
  */
-public class MainFragment extends BaseFragment {
-    private RadioGroup rgGroup;
 
+public class MainFragment extends Fragment {
+    private RadioGroup rgGroup;
+    public Activity mActivity;
     private ViewPager mViewPager;
     private ArrayList<BasePager> mPagerList;
     private ContentAdapter mContentAdapter;
-
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mActivity=getActivity();
+    }
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return initViews();
+    }
+    //依附的Activity创建完成
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initData();
+    }
     public View initViews() {
         mContentAdapter = new ContentAdapter();
         View view = View.inflate(getActivity(), R.layout.fragment_content, null);
@@ -37,22 +58,8 @@ public class MainFragment extends BaseFragment {
         ViewUtils.inject(this, view); //注入view和事件
         return view;
     }
-    public interface OnLogInListener {
-        void setOnLogInListener();
-    }
 
-    public interface OnLogOutListener {
-        void setOnLogOutListener();
-    }
-    @Override
     public void initData() {
-        try {
-            loginInListener = (OnLogInListener) mActivity;
-            logOutListener =  (OnLogOutListener)mActivity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(mActivity.toString() + " must implement OnLoginInListener");
-
-        }
         rgGroup.check(R.id.rb_home);
 
         rgGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -98,8 +105,6 @@ public class MainFragment extends BaseFragment {
         mViewPager.setAdapter(mContentAdapter);
 
     }
-    private OnLogInListener loginInListener;
-    private OnLogOutListener logOutListener;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -108,7 +113,6 @@ public class MainFragment extends BaseFragment {
             //正常登陆后回调
             case 2:
                 setLogIn();
-                loginInListener.setOnLogInListener();
                 break;
 
             default:

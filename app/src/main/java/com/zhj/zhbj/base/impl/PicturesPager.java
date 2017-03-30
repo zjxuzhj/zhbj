@@ -79,7 +79,7 @@ public class PicturesPager extends BasePager {
         if (!TextUtils.isEmpty(cache)) {
             parseData(cache);
         }
-        getDataFromServer();
+//        getDataFromServer();
         fl_content.addView(initView());
     }
 

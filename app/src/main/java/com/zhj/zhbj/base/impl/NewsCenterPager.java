@@ -38,7 +38,7 @@ public class NewsCenterPager extends BasePager {
             parseData(cache);
             System.out.println("读取缓存");
         }
-        getDataFromServer();  //不管有没有缓存，都获取最新数据，保证数据最新
+//        getDataFromServer();  //不管有没有缓存，都获取最新数据，保证数据最新
 
 
     }

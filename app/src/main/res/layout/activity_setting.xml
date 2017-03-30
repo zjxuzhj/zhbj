@@ -10,8 +10,14 @@
     <TextView
         android:id="@+id/tv_login"
         style="@style/text_lin_main"
-        android:text="登陆账号"
+        android:text="登录账号"
        />
+    <TextView
+        android:id="@+id/tv_logOut"
+        style="@style/text_lin_main"
+        android:text="退出登录"
+       />
+
     <TextView
         android:layout_marginTop="15dp"
         style="@style/text_lin_main"

@@ -27,7 +27,7 @@ import cn.bmob.v3.listener.LogInListener;
 /**
  * 登陆页面
  */
-public class LoginActivity extends AppCompatActivity implements MainFragment.OnLogInListener, MainFragment.OnLogOutListener {
+public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     @BindView(R.id.input_email)
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements MainFragment.OnL
                     public void done(User user, BmobException e) {
                         if (user != null) {
                             Log.i("smile", "用户登陆成功");
-                            setOnLogInListener();
+                            onLoginSuccess();
                         }else{
                             Log.i("smile", "用户登陆失败");
                         }
@@ -78,17 +78,6 @@ public class LoginActivity extends AppCompatActivity implements MainFragment.OnL
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
-    }
-
-    @Override
-    public void setOnLogInListener() {
-        onLoginSuccess();
-
-    }
-
-    @Override
-    public void setOnLogOutListener() {
-
     }
 
 
