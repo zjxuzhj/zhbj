@@ -25,9 +25,11 @@
        />
     <TextView
         style="@style/text_lin_main"
+        android:id="@+id/tv_my_score"
         android:text="我的积分"
        />
     <TextView
+
         android:layout_marginTop="15dp"
         style="@style/text_lin_main"
         android:text="意见反馈"

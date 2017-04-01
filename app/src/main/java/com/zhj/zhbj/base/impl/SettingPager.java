@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import cn.bmob.v3.BmobUser;
 
 import static cn.bmob.v3.Bmob.getApplicationContext;
+import static cn.jpush.android.api.d.g;
 
 /**
  * Created by HongJay on 2016/7/16.
@@ -28,6 +29,8 @@ public class SettingPager extends BasePager {
     TextView mTvLogin;
     @BindView(R.id.tv_logOut)
     TextView mTvLogOut;
+    @BindView(R.id.tv_my_score)
+    TextView mTvMyScore;
     private Activity mActivity;
 
 
@@ -55,7 +58,7 @@ public class SettingPager extends BasePager {
         if (userInfo != null) {
             mTvLogin.setVisibility(View.GONE);
             mTvLogOut.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mTvLogin.setVisibility(View.VISIBLE);
             mTvLogOut.setVisibility(View.GONE);
         }
@@ -72,17 +75,26 @@ public class SettingPager extends BasePager {
                 setLogOut();
             }
         });
+        if(userInfo!=null) {
+            mTvMyScore.setText("我的积分                " + userInfo.getScore());
+        }
     }
 
     private void setLogOut() {
         User userInfo = BmobUser.getCurrentUser(User.class);
         userInfo.logOut();
         Toast.makeText(mActivity, "账户成功登出！", Toast.LENGTH_SHORT).show();
+        mTvMyScore.setVisibility(View.GONE);
         mTvLogin.setVisibility(View.VISIBLE);
         mTvLogOut.setVisibility(View.GONE);
     }
 
     public void setLogIn() {
+        User userInfo = BmobUser.getCurrentUser(User.class);
+        String username = userInfo.getUsername();
+        Toast.makeText(mActivity, "欢迎" + username + "的登录！", Toast.LENGTH_SHORT).show();
+        mTvMyScore.setText("我的积分                "+ userInfo.getScore());
+        mTvMyScore.setVisibility(View.VISIBLE);
         mTvLogin.setVisibility(View.GONE);
         mTvLogOut.setVisibility(View.VISIBLE);
     }

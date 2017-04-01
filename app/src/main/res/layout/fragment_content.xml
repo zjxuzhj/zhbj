@@ -31,7 +31,7 @@
             style="@style/BottomTabStyle"
             android:drawablePadding="1dp"
             android:drawableTop="@drawable/btn_tab_news_selector"
-            android:text="新闻中心"
+            android:text="组图"
             android:textSize="12sp"/>
 
         <RadioButton
@@ -39,7 +39,7 @@
             style="@style/BottomTabStyle"
             android:drawablePadding="1dp"
             android:drawableTop="@drawable/btn_tab_gov_selector"
-            android:text="组图"
+            android:text="商城"
             android:textSize="12sp"/>
 
         <RadioButton

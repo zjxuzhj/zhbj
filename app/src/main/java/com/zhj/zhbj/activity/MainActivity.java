@@ -4,15 +4,19 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
 import com.zhj.zhbj.R;
+import com.zhj.zhbj.domain.User;
 import com.zhj.zhbj.fragment.MainFragment;
+
+import cn.bmob.v3.BmobUser;
 
 /**
  * 主页面，用来放fragment
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
     private static final String FRAGMENT_CONTENT= "fragment_content";
 
     @Override
@@ -52,5 +56,12 @@ public class MainActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         MainFragment fragment = (MainFragment) fm.findFragmentByTag(FRAGMENT_CONTENT);
         return fragment;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        User userInfo = BmobUser.getCurrentUser(User.class);
+        userInfo.logOut();
     }
 }
