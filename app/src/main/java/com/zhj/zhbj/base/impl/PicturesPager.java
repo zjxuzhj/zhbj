@@ -75,11 +75,11 @@ public class PicturesPager extends BasePager {
         tv_title.setText("组图");
         fl_content.removeAllViews();
 
-        String cache = CacheUtils.getCache(GlobalConstant.PHOTOS_URL, mActivity);
-        if (!TextUtils.isEmpty(cache)) {
-            parseData(cache);
-        }
-//        getDataFromServer();
+//        String cache = CacheUtils.getCache(GlobalConstant.PHOTOS_URL, mActivity);
+//        if (!TextUtils.isEmpty(cache)) {
+//            parseData(cache);
+//        }
+        getDataFromServer();
         fl_content.addView(initView());
     }
 
@@ -114,7 +114,7 @@ public class PicturesPager extends BasePager {
                     @Override
                     public void run() {
                         parseData(result);
-                        CacheUtils.setCache(GlobalConstant.PHOTOS_URL, result, mActivity);
+//                        CacheUtils.setCache(GlobalConstant.PHOTOS_URL, result, mActivity);
 
                     }
                 });

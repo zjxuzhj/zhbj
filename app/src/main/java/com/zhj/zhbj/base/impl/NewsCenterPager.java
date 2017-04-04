@@ -33,12 +33,12 @@ public class NewsCenterPager extends BasePager {
     @Override
     public void initData() {
 //        setSlidingMenuEnable(true);
-        String cache = CacheUtils.getCache(GlobalConstant.CATEGORIES_URL, mActivity);
-        if (!TextUtils.isEmpty(cache)) {
-            parseData(cache);
-            System.out.println("读取缓存");
-        }
-//        getDataFromServer();  //不管有没有缓存，都获取最新数据，保证数据最新
+//        String cache = CacheUtils.getCache(GlobalConstant.CATEGORIES_URL, mActivity);
+//        if (!TextUtils.isEmpty(cache)) {
+//            parseData(cache);
+//            System.out.println("读取缓存");
+//        }
+        getDataFromServer();  //不管有没有缓存，都获取最新数据，保证数据最新
 
 
     }
@@ -52,7 +52,7 @@ public class NewsCenterPager extends BasePager {
                 String result = responseInfo.result;
                 parseData(result);
                 //设置缓存
-                CacheUtils.setCache(GlobalConstant.CATEGORIES_URL, result, mActivity);
+//                CacheUtils.setCache(GlobalConstant.CATEGORIES_URL, result, mActivity);
             }
 
             @Override

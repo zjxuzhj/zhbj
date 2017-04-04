@@ -6,6 +6,7 @@
 
     <com.zhj.zhbj.view.RefreshListView
         android:id="@+id/lv_tab_detail"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -51,7 +51,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
 
     @Override
     public void initData() {
-        mPagers = new ArrayList<TabDetailPager>();
+        mPagers = new ArrayList<>();
         for (int i=0;i<mTabMenuList.size();i++){
             mPagers.add(new TabDetailPager((mActivity),mTabMenuList.get(i)));
         }
@@ -102,9 +102,16 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
             return pager.mRootView;
         }
 
+        //得到当前页顶部的tab的标题
         @Override
         public CharSequence getPageTitle(int position) {
-            return mTabMenuList.get(position).title;
+            CharSequence[] strings = {"杭州","中国","国际","体育","科技","生活","旅游","军事"};
+
+            if(position>=strings.length){
+                position=position%strings.length;
+            }
+            return strings[position];
+//            return mTabMenuList.get(position).title;
         }
 
         @Override
