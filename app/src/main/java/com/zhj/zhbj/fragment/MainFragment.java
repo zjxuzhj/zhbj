@@ -20,6 +20,7 @@ import com.zhj.zhbj.base.BasePager;
 import com.zhj.zhbj.base.impl.NewsCenterPager;
 import com.zhj.zhbj.base.impl.PicturesPager;
 import com.zhj.zhbj.base.impl.SettingPager;
+import com.zhj.zhbj.base.impl.ShoppingPager;
 
 import java.util.ArrayList;
 
@@ -81,7 +82,7 @@ public class MainFragment extends Fragment {
 
         mPagerList.add(new NewsCenterPager(mActivity));
         mPagerList.add(new PicturesPager(mActivity));
-        mPagerList.add(new PicturesPager(mActivity));
+        mPagerList.add(new ShoppingPager(mActivity));
         mPagerList.add(new SettingPager(mActivity));
 
         mPagerList.get(1).initData();

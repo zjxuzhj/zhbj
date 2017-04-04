@@ -22,14 +22,12 @@ import java.util.ArrayList;
 public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPager.OnPageChangeListener{
     private ViewPager mViewPager;
     private MenuDetailAdapter menuDetailAdapter;
-    private ArrayList<NewsData.NewsTabData> mTabMenuList;
     private ArrayList <TabDetailPager>mPagers;
     private TabPageIndicator indicator;
     private ImageButton ib;
 
-    public NewsMenuDetailPager(Activity activity, ArrayList<NewsData.NewsTabData> children) {
+    public NewsMenuDetailPager(Activity activity) {
         super(activity);
-        mTabMenuList=children;
     }
     @Override
     public View initViews() {
@@ -52,8 +50,8 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
     @Override
     public void initData() {
         mPagers = new ArrayList<>();
-        for (int i=0;i<mTabMenuList.size();i++){
-            mPagers.add(new TabDetailPager((mActivity),mTabMenuList.get(i)));
+        for (int i=0;i<10;i++){
+            mPagers.add(new TabDetailPager((mActivity)));
         }
         menuDetailAdapter=new MenuDetailAdapter();
         mViewPager.setAdapter(menuDetailAdapter);
@@ -86,7 +84,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
 
         @Override
         public int getCount() {
-            return mTabMenuList.size();
+            return 15;
         }
 
         @Override

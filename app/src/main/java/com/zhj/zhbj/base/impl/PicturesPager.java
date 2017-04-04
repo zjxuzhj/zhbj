@@ -1,10 +1,12 @@
 package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -15,15 +17,23 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.lidroid.xutils.BitmapUtils;
 import com.zhj.zhbj.R;
+import com.zhj.zhbj.activity.NewsDetailActivity;
 import com.zhj.zhbj.base.BasePager;
+import com.zhj.zhbj.base.TabDetailPager;
 import com.zhj.zhbj.domain.PhotosData;
+import com.zhj.zhbj.domain.news;
 import com.zhj.zhbj.global.GlobalConstant;
 import com.zhj.zhbj.utils.CacheUtils;
+import com.zhj.zhbj.utils.PrefUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TimerTask;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -35,12 +45,13 @@ import okhttp3.Response;
  */
 public class PicturesPager extends BasePager {
 
-    private ArrayList<PhotosData.PhotoInfo> mPhotoList;
+//    private ArrayList<PhotosData.PhotoInfo> mPhotoList;
     private PhotosData data;
     private PhotoAdapter mAdapter;
 
     private ListView lvPhoto;
     private GridView gvPhoto;
+    private List<news> picNewsList = new ArrayList<>();
 
     public PicturesPager(Activity activity) {
         super(activity);
@@ -89,53 +100,90 @@ public class PicturesPager extends BasePager {
         lvPhoto = (ListView) view.findViewById(R.id.lv_photo);
         gvPhoto = (GridView) view.findViewById(R.id.gv_photo);
         lvPhoto.setDividerHeight(0);
+        lvPhoto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // 跳转新闻详情页
+                Intent intent = new Intent();
+                intent.setClass(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", picNewsList.get(i).getHtml().getUrl());
+                System.out.println(picNewsList.get(i).getHtml().getUrl());
+                mActivity.startActivity(intent);
+            }
+        });
+        gvPhoto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // 跳转新闻详情页
+                Intent intent = new Intent();
+                intent.setClass(mActivity, NewsDetailActivity.class);
+                intent.putExtra("url", picNewsList.get(i).getHtml().getUrl());
+                System.out.println(picNewsList.get(i).getHtml().getUrl());
+                mActivity.startActivity(intent);
+            }
+        });
         return view;
     }
 
 
     private void  getDataFromServer() {
-        OkHttpClient client = new OkHttpClient();
-        Request request=new Request.Builder()
-                .url(GlobalConstant.PHOTOS_URL)
-                .get()
-                .build();
-        client.newCall(request).enqueue(new Callback() {
+//        OkHttpClient client = new OkHttpClient();
+//        Request request=new Request.Builder()
+//                .url(GlobalConstant.PHOTOS_URL)
+//                .get()
+//                .build();
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Toast.makeText(mActivity, e.toString(), Toast.LENGTH_SHORT).show();
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                final String result = response.body().string();
+//                mActivity.runOnUiThread(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        parseData(result);
+////                        CacheUtils.setCache(GlobalConstant.PHOTOS_URL, result, mActivity);
+//
+//                    }
+//                });
+//
+//            }
+//        });
+        BmobQuery<news> query = new BmobQuery<>();
+        //返回50条数据，如果不加上这条语句，默认返回10条数据
+        query.setLimit(50);
+        //执行查询方法
+        query.findObjects(new FindListener<news>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Toast.makeText(mActivity, e.toString(), Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String result = response.body().string();
-                mActivity.runOnUiThread(new TimerTask() {
-                    @Override
-                    public void run() {
-                        parseData(result);
-//                        CacheUtils.setCache(GlobalConstant.PHOTOS_URL, result, mActivity);
-
+            public void done(List<news> object, BmobException e) {
+                if (e == null) {
+//                    newsdataList=object;
+                    for (news newsBean : object) {
+                        if (newsBean.getType() == 3) {
+                            picNewsList.add(newsBean);
+                        }
                     }
-                });
 
+                    if (picNewsList != null) {
+                        mAdapter = new PhotoAdapter();
+                        lvPhoto.setAdapter(mAdapter);
+                        gvPhoto.setAdapter(mAdapter);
+                    }
+                } else {
+                    Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                }
             }
         });
-
-    }
-
-    private void parseData(String result) {
-        Gson gson = new Gson();
-        data = gson.fromJson(result, PhotosData.class);
-        //获取组图列表集合
-
-        mPhotoList = data.data.news;
-        if (mPhotoList != null) {
-            mAdapter = new PhotoAdapter();
-            lvPhoto.setAdapter(mAdapter);
-            gvPhoto.setAdapter(mAdapter);
-        }
-
 
     }
 
@@ -151,12 +199,12 @@ public class PicturesPager extends BasePager {
 
         @Override
         public int getCount() {
-            return mPhotoList.size();
+            return picNewsList.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return mPhotoList.get(i);
+            return picNewsList.get(i);
         }
 
         @Override
@@ -172,16 +220,16 @@ public class PicturesPager extends BasePager {
                 convertView = View.inflate(mActivity, R.layout.list_photo_item, null);
                 holder.title = (TextView) convertView.findViewById(R.id.tv_title);
                 holder.image = (ImageView) convertView.findViewById(R.id.iv_pic);
-                bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
-                holder.title.setText(mPhotoList.get(i).title);
+                bitmapUtils.display(holder.image, picNewsList.get(i).getImg().getUrl());
+                holder.title.setText(picNewsList.get(i).getTitle());
 
                 convertView.setTag(holder);
                 return convertView;
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            bitmapUtils.display(holder.image, mPhotoList.get(i).listimage);
-            holder.title.setText(mPhotoList.get(i).title);
+            bitmapUtils.display(holder.image, picNewsList.get(i).getImg().getUrl());
+            holder.title.setText(picNewsList.get(i).getTitle());
             return convertView;
         }
 
