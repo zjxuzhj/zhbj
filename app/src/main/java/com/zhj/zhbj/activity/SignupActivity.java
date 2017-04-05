@@ -12,9 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhj.zhbj.R;
+import com.zhj.zhbj.domain.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * 注册页面
@@ -79,32 +82,49 @@ public class SignupActivity extends AppCompatActivity {
         String name = _nameText.getText().toString();
         String address = _addressText.getText().toString();
         String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
 
-        // TODO: Implement your own signup logic here.
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
+        User user = new User();
+        user.setAddress(address);
+        user.setScore(50);
+        user.setUsername(name);
+        user.setPassword(password);
+        user.signUp(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                if (e == null) {
+                    Toast.makeText(SignupActivity.this, "账号创建成功：", Toast.LENGTH_SHORT).show();
+                    // On complete call either onSignupSuccess or onSignupFailed
+                    // depending on success
+                    onSignupSuccess();
+                    // onSignupFailed();
+                    progressDialog.dismiss();
+                } else {
+                    if (e.getMessage().contains("IllegalStateException")) {
+                        Toast.makeText(SignupActivity.this, "账号创建成功：", Toast.LENGTH_SHORT).show();
                         // On complete call either onSignupSuccess or onSignupFailed
                         // depending on success
                         onSignupSuccess();
                         // onSignupFailed();
                         progressDialog.dismiss();
+                        return;
+                    } else {
+                        Toast.makeText(SignupActivity.this, "失败：" + e.getMessage() + "," + e.getErrorCode(), Toast.LENGTH_SHORT).show();
+                        Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                     }
-                }, 3000);
+                }
+            }
+        });
     }
 
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
+        setResult(2, null);
         finish();
     }
 
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _signupButton.setEnabled(true);
     }
 

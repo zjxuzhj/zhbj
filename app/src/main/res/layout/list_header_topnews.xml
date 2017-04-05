@@ -8,7 +8,7 @@
     <com.zhj.zhbj.view.TabViewPager
         android:id="@+id/vp_tab_detail"
         android:layout_width="match_parent"
-        android:layout_height="180dp"></com.zhj.zhbj.view.TabViewPager>
+        android:layout_height="120dp"></com.zhj.zhbj.view.TabViewPager>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:id="@+id/indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dip"
+                android:padding="10dp"
                 app:fillColor="#f00"
                 app:pageColor="@android:color/darker_gray"
                 app:radius="3dp"

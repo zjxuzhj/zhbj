@@ -8,13 +8,6 @@ import cn.bmob.v3.BmobUser;
  */
 
 public class User extends BmobUser {
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
 
     public String getQq() {
         return qq;
@@ -40,7 +33,6 @@ public class User extends BmobUser {
         this.address = address;
     }
 
-    private int uid;
     private String qq;
     private String tel;
     private String address;

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 public class NewsCenterPager extends BasePager {
     private ArrayList<BaseMenuDetailPager> basePagersList;
-//    private NewsData newsData;
 
     public NewsCenterPager(Activity activity) {
         super(activity);
@@ -36,43 +35,10 @@ public class NewsCenterPager extends BasePager {
 //            parseData(cache);
 //            System.out.println("读取缓存");
 //        }
-//        getDataFromServer();  //不管有没有缓存，都获取最新数据，保证数据最新
         basePagersList = new ArrayList<>();
         basePagersList.add(new NewsMenuDetailPager(mActivity));
         setCurrentMenuDetailPager(0);
 
-    }
-
-    //从服务器获得数据
-    private void getDataFromServer() {
-        HttpUtils utils = new HttpUtils();
-        utils.send(HttpRequest.HttpMethod.GET, GlobalConstant.CATEGORIES_URL, new RequestCallBack<String>() {
-            @Override
-            public void onSuccess(ResponseInfo<String> responseInfo) {
-                String result = responseInfo.result;
-                parseData(result);
-                //设置缓存
-//                CacheUtils.setCache(GlobalConstant.CATEGORIES_URL, result, mActivity);
-            }
-
-            @Override
-            public void onFailure(HttpException error, String msg) {
-                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                error.printStackTrace();
-            }
-        });
-
-    }
-
-    //解析网络数据
-    protected void parseData(String result) {
-        Gson gson = new Gson();
-//        newsData = gson.fromJson(result, NewsData.class);
-
-        //准备四个菜单详情页
-        basePagersList = new ArrayList<>();
-        basePagersList.add(new NewsMenuDetailPager(mActivity));
-        setCurrentMenuDetailPager(0);
     }
 
     //设置当前菜单详情页
@@ -81,8 +47,7 @@ public class NewsCenterPager extends BasePager {
         fl_content.removeAllViews();
         fl_content.addView(pager.mRootView);
 
-//        NewsData.NewsMenuData newsMenuData = newsData.data.get(position);
-        tv_title.setText("aaaa");
+        tv_title.setText("杭州知道");
         pager.initData();//初始化当前页面的数据
 
     }

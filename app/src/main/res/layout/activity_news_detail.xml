@@ -5,10 +5,9 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:padding="5dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/title_red_bg">
+        android:layout_height="44dp"
+        android:background="@color/colorPrimary">
 
 
         <ImageButton
@@ -53,7 +52,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <WebView
             android:id="@+id/wv_web"

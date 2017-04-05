@@ -63,4 +63,14 @@ public class news extends BmobObject {
     private BmobFile img;//新闻图片
     private Integer id;
     private String 	pubdate;
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    private Integer score;
 }

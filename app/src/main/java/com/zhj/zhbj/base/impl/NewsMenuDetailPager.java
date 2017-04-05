@@ -11,8 +11,6 @@ import com.lidroid.xutils.ViewUtils;
 import com.viewpagerindicator.TabPageIndicator;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.base.BaseMenuDetailPager;
-import com.zhj.zhbj.base.TabDetailPager;
-import com.zhj.zhbj.domain.NewsData;
 
 import java.util.ArrayList;
 
@@ -66,18 +64,10 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
 
     @Override
     public void onPageSelected(int position) {
-//        MainActivity mainUi= (MainActivity) mActivity;
-//        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
-//        if(position==0){
-//            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-//        }else{
-//            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-//        }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 
     class MenuDetailAdapter extends PagerAdapter{

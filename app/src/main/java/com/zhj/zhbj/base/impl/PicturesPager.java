@@ -2,7 +2,6 @@ package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,41 +11,26 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.lidroid.xutils.BitmapUtils;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.activity.NewsDetailActivity;
 import com.zhj.zhbj.base.BasePager;
-import com.zhj.zhbj.base.TabDetailPager;
 import com.zhj.zhbj.domain.PhotosData;
 import com.zhj.zhbj.domain.news;
-import com.zhj.zhbj.global.GlobalConstant;
-import com.zhj.zhbj.utils.CacheUtils;
-import com.zhj.zhbj.utils.PrefUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by HongJay on 2016/7/16.
  */
 public class PicturesPager extends BasePager {
 
-//    private ArrayList<PhotosData.PhotoInfo> mPhotoList;
-    private PhotosData data;
     private PhotoAdapter mAdapter;
 
     private ListView lvPhoto;
@@ -109,7 +93,7 @@ public class PicturesPager extends BasePager {
                 // 跳转新闻详情页
                 Intent intent = new Intent();
                 intent.setClass(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", picNewsList.get(i).getHtml().getUrl());
+                intent.putExtra("news", picNewsList.get(i));
                 System.out.println(picNewsList.get(i).getHtml().getUrl());
                 mActivity.startActivity(intent);
             }
@@ -123,7 +107,7 @@ public class PicturesPager extends BasePager {
                 // 跳转新闻详情页
                 Intent intent = new Intent();
                 intent.setClass(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", picNewsList.get(i).getHtml().getUrl());
+                intent.putExtra("news", picNewsList.get(i));
                 System.out.println(picNewsList.get(i).getHtml().getUrl());
                 mActivity.startActivity(intent);
             }
@@ -133,32 +117,6 @@ public class PicturesPager extends BasePager {
 
 
     private void  getDataFromServer() {
-//        OkHttpClient client = new OkHttpClient();
-//        Request request=new Request.Builder()
-//                .url(GlobalConstant.PHOTOS_URL)
-//                .get()
-//                .build();
-//        client.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Toast.makeText(mActivity, e.toString(), Toast.LENGTH_SHORT).show();
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                final String result = response.body().string();
-//                mActivity.runOnUiThread(new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        parseData(result);
-////                        CacheUtils.setCache(GlobalConstant.PHOTOS_URL, result, mActivity);
-//
-//                    }
-//                });
-//
-//            }
-//        });
         BmobQuery<news> query = new BmobQuery<>();
         //返回50条数据，如果不加上这条语句，默认返回10条数据
         query.setLimit(50);
@@ -167,7 +125,6 @@ public class PicturesPager extends BasePager {
             @Override
             public void done(List<news> object, BmobException e) {
                 if (e == null) {
-//                    newsdataList=object;
                     for (news newsBean : object) {
                         if (newsBean.getType() == 3) {
                             picNewsList.add(newsBean);

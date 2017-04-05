@@ -3,20 +3,16 @@ package com.zhj.zhbj.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhj.zhbj.R;
-import com.zhj.zhbj.base.impl.SettingPager;
 import com.zhj.zhbj.domain.User;
-import com.zhj.zhbj.fragment.MainFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (user != null) {
                             Log.i("smile", "用户登陆成功");
                             onLoginSuccess();
-                        }else{
+                        } else {
                             Log.i("smile", "用户登陆失败");
                         }
                     }
@@ -97,20 +93,23 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
+        String userStr = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
+        BmobUser.loginByAccount(userStr, password, new LogInListener<User>() {
 
-        new Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+            @Override
+            public void done(User user, BmobException e) {
+                if (user != null) {
+                    Log.i("smile", "用户登陆成功");
+                    onLoginSuccess();
+                    progressDialog.dismiss();
+                } else {
+                    Log.i("smile", "用户登陆失败");
+                }
+            }
+        });
+
     }
 
 
@@ -135,9 +134,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         mUserInfo = BmobUser.getCurrentUser(User.class);
         _loginButton.setEnabled(true);
-        Intent intent = new Intent();
-        intent.putExtra("NUll", "");
-        setResult(2, intent);
+        setResult(2, null);
         finish();
     }
 
@@ -153,15 +150,15 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+        if (email.isEmpty() || email.length() < 3) {
+            _emailText.setError("至少三个字符");
             valid = false;
         } else {
             _emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            _passwordText.setError("密码长度大于四，小于十");
             valid = false;
         } else {
             _passwordText.setError(null);

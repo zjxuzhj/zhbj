@@ -11,7 +11,7 @@
         android:text="新闻标题新闻标题标题新闻标题新闻标题标题新闻标题新闻标题标题新闻标题新闻标题标题新闻标题新闻标题标题"
         android:maxLines="2"
         android:ellipsize="end"
-        android:textSize="17dp"
+        android:textSize="14sp"
         android:padding="5dp"
         android:textColor="@android:color/black"
         android:layout_alignTop="@+id/imageView"
@@ -20,8 +20,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="120dp"
-        android:layout_height="75dp"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
         android:scaleType="fitXY"
         android:background="@android:color/darker_gray"
         android:padding="1dp"
@@ -40,6 +40,7 @@
         android:text="2016年7月21日10:25:27"
         android:padding="5dp"
         android:id="@+id/textView2"
+        android:textSize="12sp"
         android:layout_alignBottom="@+id/imageView"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView" />

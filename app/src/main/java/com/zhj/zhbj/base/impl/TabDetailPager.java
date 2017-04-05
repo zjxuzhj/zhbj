@@ -1,4 +1,4 @@
-package com.zhj.zhbj.base;
+package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +29,7 @@ import com.lidroid.xutils.http.client.HttpRequest;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.activity.NewsDetailActivity;
+import com.zhj.zhbj.base.BaseMenuDetailPager;
 import com.zhj.zhbj.domain.TabData;
 import com.zhj.zhbj.domain.news;
 import com.zhj.zhbj.global.GlobalConstant;
@@ -51,12 +52,8 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private RefreshListView mLvList;
     private TextView tvTitle;
     private ViewPager vpTabDetail;
-    private TextView tv_content;
-    private TabData mTabData1;
     private String ids;
-    //    private ArrayList<TabData.TabDetailData.TopNewsData> topnews;
     private CirclePageIndicator indicator;
-    //    private ArrayList<TabData.TabDetailData.TabNewsData> mNewsList; //新闻数据集合
     private String mMoreUrl;   //更多页面的地址
     private MyListAdapter myListAdapter;
     private TabAdapter tabAdapter;
@@ -116,7 +113,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 // 跳转新闻详情页
                 Intent intent = new Intent();
                 intent.setClass(mActivity, NewsDetailActivity.class);
-                intent.putExtra("url", newsdataList.get(i).getHtml().getUrl());
+                intent.putExtra("news", newsdataList.get(i));
                 System.out.println(newsdataList.get(i).getHtml().getUrl());
                 mActivity.startActivity(intent);
             }
@@ -140,120 +137,43 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             @Override
             public void done(List<news> object, BmobException e) {
                 if (e == null) {
-//                    newsdataList=object;
-                    for (news newsBean : object) {
-                        if (newsBean.getType() == 1) {
-                            newsdataList.add(newsBean);
-                        } else if (newsBean.getType() == 2) {
-                            topnewsList.add(newsBean);
-                        }
-                    }
-                    if (topnewsList != null) {
-                        tabAdapter = new TabAdapter();
-                        indicator.setOnPageChangeListener(TabDetailPager.this);
-                        vpTabDetail.setAdapter(tabAdapter);
-                        indicator.onPageSelected(0);
-                        tvTitle.setText(topnewsList.get(0).getTitle());
-                        indicator.setViewPager(vpTabDetail);
-                        indicator.setSnap(true);
-                    }
-                    myListAdapter = new MyListAdapter();
-                    mLvList.setAdapter(myListAdapter);
+                    parseData(object);
                 } else {
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
             }
         });
-        if (handler == null) {
-            handler = new Handler() {
-                @Override
-                public void handleMessage(Message msg) {
-                    int currentItem = vpTabDetail.getCurrentItem();
-                    if (currentItem < topnewsList.size() - 1) {
-                        currentItem++;
-                    } else {
-                        currentItem = 0;
-                    }
-
-                    vpTabDetail.setCurrentItem(currentItem); //切换到下一个页面
-
-//                        handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
-                }
-
-
-            };
-        }
-
-//        HttpUtils httpUtils = new HttpUtils();
-//        httpUtils.send(HttpRequest.HttpMethod.GET, mUrl, new RequestCallBack<String>() {
-//            @Override
-//            public void onSuccess(ResponseInfo<String> responseInfo) {
-//                String result = responseInfo.result;
-//                parseData(result, false);
-//                mLvList.onRefreshComplete(true);
-////                CacheUtils.setCache(mUrl, result, mActivity);
-//            }
-//
-//            @Override
-//            public void onFailure(HttpException error, String msg) {
-//                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-//                error.printStackTrace();
-//                mLvList.onRefreshComplete(false);
-//            }
-//        });
-
-    }
-
-    //加载下一页数据
-    public void getMoreDataFromServer() {
-        HttpUtils httpUtils = new HttpUtils();
-        httpUtils.send(HttpRequest.HttpMethod.GET, mMoreUrl, new RequestCallBack<String>() {
-            @Override
-            public void onSuccess(ResponseInfo<String> responseInfo) {
-                String result = responseInfo.result;
-                parseData(result, true);
-                mLvList.onRefreshComplete(true);
-            }
-
-            @Override
-            public void onFailure(HttpException error, String msg) {
-                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                error.printStackTrace();
-                mLvList.onRefreshComplete(false);
-            }
-        });
-
     }
 
     private Handler handler;
 
     //解析拿到的网络数据
-    private void parseData(String result, boolean isMore) {
-
-        Gson gson = new Gson();
-        mTabData1 = gson.fromJson(result, TabData.class);
-
-        String more = mTabData1.data.more;
-        if (!TextUtils.isEmpty(more)) {
-            mMoreUrl = GlobalConstant.SERVER_URL + more;
-        } else {
-            mMoreUrl = null;
+    private void parseData(List<news> object) {
+        for (news newsBean : object) {
+            if (newsBean.getType() == 1) {
+                newsdataList.add(newsBean);
+            } else if (newsBean.getType() == 2) {
+                topnewsList.add(newsBean);
+            }
         }
-        if (!isMore) {
-//            if (topnews != null) {
-//                tabAdapter = new TabAdapter();
-//                indicator.setOnPageChangeListener(this);
-//                vpTabDetail.setAdapter(tabAdapter);
-//                indicator.onPageSelected(0);
-//                tvTitle.setText(topnews.get(0).title);
-//                indicator.setViewPager(vpTabDetail);
-//                indicator.setSnap(true);
-//            }
+
+        myListAdapter = new MyListAdapter();
+        mLvList.setAdapter(myListAdapter);
+
+        if (!false) {
+            if (topnewsList != null) {
+                tabAdapter = new TabAdapter();
+                indicator.setOnPageChangeListener(TabDetailPager.this);
+                vpTabDetail.setAdapter(tabAdapter);
+                indicator.onPageSelected(0);
+                tvTitle.setText(topnewsList.get(0).getTitle());
+                indicator.setViewPager(vpTabDetail);
+                indicator.setSnap(true);
+            }
             if (mLvList != null) {
                 //填充新闻列表数据
-//                myListAdapter = new MyListAdapter();
-//                mLvList.setAdapter(myListAdapter);
-
+                myListAdapter = new MyListAdapter();
+                mLvList.setAdapter(myListAdapter);
             }
             if (handler == null) {
                 handler = new Handler() {
@@ -270,15 +190,10 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
 //                        handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
                     }
-
-                    ;
                 };
-
 //            handler.sendEmptyMessageDelayed(0, 3000);
             }
         } else {
-            ArrayList<TabData.TabDetailData.TabNewsData> news = mTabData1.data.news;
-            news.addAll(news);
             myListAdapter.notifyDataSetChanged();
             tabAdapter.notifyDataSetChanged();
         }

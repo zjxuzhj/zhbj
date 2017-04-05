@@ -37,7 +37,6 @@ public class SettingPager extends BasePager {
     public SettingPager(Activity activity) {
         super(activity);
         this.mActivity = activity;
-
     }
 
 
