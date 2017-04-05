@@ -16,7 +16,6 @@ import com.lidroid.xutils.BitmapUtils;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.activity.NewsDetailActivity;
 import com.zhj.zhbj.base.BasePager;
-import com.zhj.zhbj.domain.PhotosData;
 import com.zhj.zhbj.domain.news;
 
 import java.util.ArrayList;
@@ -48,6 +47,7 @@ public class PicturesPager extends BasePager {
             }
         });
     }
+
     private boolean isListDiaplay = false;
 
     private void changeDisplay() {
@@ -116,7 +116,7 @@ public class PicturesPager extends BasePager {
     }
 
 
-    private void  getDataFromServer() {
+    private void getDataFromServer() {
         BmobQuery<news> query = new BmobQuery<>();
         //返回50条数据，如果不加上这条语句，默认返回10条数据
         query.setLimit(50);
@@ -149,7 +149,7 @@ public class PicturesPager extends BasePager {
 
 
         public PhotoAdapter() {
-            bitmapUtils=new BitmapUtils(mActivity);
+            bitmapUtils = new BitmapUtils(mActivity);
 
             bitmapUtils.configDefaultLoadingImage(R.drawable.news_pic_default);
         }
