@@ -15,95 +15,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="本单详情"
+            android:text="活动规则"
             android:textColor="@color/text_content_black"
             android:textSize="@dimen/section_text_size"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="3dp"
-            android:background="@mipmap/line_divide_vertical"/>
-
-        <WebView
-            android:id="@+id/web_detail"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"></WebView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="3dp"
-            android:background="@mipmap/line_divide_vertical"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="查看图文详情"
-                android:textColor="@color/app_yellow"
-                android:textSize="@dimen/near_by_textSize1"/>
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
-                android:src="@mipmap/movie_arrow"/>
-        </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="温馨提示"
-            android:textColor="@color/text_content_black"
-            android:textSize="@dimen/section_text_size"/>
-
-        <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:background="@mipmap/line_divide_vertical"/>
+            android:background="@mipmap/line_divide_vertical"
+            android:text="1. 活动时间：2017年1月1日—2018年1月1日；
+2. 产品兑换后将根据您预留的地点，进行排货，请仔细核对好地址和手机；
+3. 如有疑问请邮件联系newsclub@vip.163.com，客服专线：4008794683、客服QQ：9817704（工作日9:00至18:00)。"/>
 
-        <WebView
-            android:id="@+id/web_notice"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"></WebView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="看了又看"
-            android:textColor="@color/text_content_black"
-            android:textSize="@dimen/section_text_size"/>
-
-        <ListView
-            android:id="@+id/list_recommend"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
 
     </LinearLayout>
+
 
 </LinearLayout>

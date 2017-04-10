@@ -106,7 +106,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 String readId = newsdataList.get(i).getId().toString();
                 if (!ids.contains(readId)) {
                     ids = ids + readId + ",";
-                    PrefUtils.setString(mActivity, "read_ids", ids);
+                    PrefUtils.putString(mActivity, "read_ids", ids);
                 }
                 changeReadColor(view);
 
@@ -137,6 +137,9 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             @Override
             public void done(List<news> object, BmobException e) {
                 if (e == null) {
+                    newsdataList.clear();
+                    topnewsList.clear();
+
                     parseData(object);
                 } else {
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());

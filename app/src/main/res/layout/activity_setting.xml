@@ -11,33 +11,85 @@
         android:id="@+id/tv_login"
         style="@style/text_lin_main"
         android:text="登录账号"
-       />
+        />
+
     <TextView
         android:id="@+id/tv_logOut"
         style="@style/text_lin_main"
         android:text="退出登录"
-       />
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/ll_isRight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/selector_list"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:clickable="false"
+            android:focusable="false"
+            android:id="@+id/tv_notice"
+            style="@style/text_lin_main"
+            android:gravity="center_vertical"
+            android:text="消息通知"
+            />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:focusable="false"/>
+    </RelativeLayout>
 
     <TextView
-        android:layout_marginTop="15dp"
-        style="@style/text_lin_main"
-        android:text="消息通知"
-       />
-    <TextView
-        style="@style/text_lin_main"
         android:id="@+id/tv_my_score"
-        android:text="我的积分"
-       />
-    <TextView
-
-        android:layout_marginTop="15dp"
         style="@style/text_lin_main"
+        android:text="我的积分"
+        />
+
+    <TextView
+        android:id="@+id/tv_address"
+        style="@style/text_lin_main"
+        android:text="我的地址"
+        />
+
+    <TextView
+        android:id="@+id/tv_order"
+        android:visibility="gone"
+        style="@style/text_lin_main"
+        android:text="我的订单"
+        />
+
+    <TextView
+        android:id="@+id/tv_feedback"
+        style="@style/text_lin_main"
+        android:layout_marginTop="15dp"
         android:text="意见反馈"
-       />
+        />
+
+    <TextView
+        android:id="@+id/tv_update"
+        style="@style/text_lin_main"
+        android:layout_marginTop="15dp"
+        android:text="检查更新"
+        />
+
     <TextView
         style="@style/text_lin_main"
         android:text="关于"
-       />
+        />
 
 
 </LinearLayout>

@@ -40,7 +40,7 @@ public class GuideActivity extends AppCompatActivity {
         btn_open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrefUtils.setBoolean(getApplication(),"first",true);
+                PrefUtils.putBoolean(getApplication(),"first",true);
 //                SharedPreferences sharedPreferences=getSharedPreferences("config",MODE_PRIVATE);
 //                sharedPreferences.edit().putBoolean("first",true).commit();
                 Intent intent = new Intent(GuideActivity.this, MainActivity.class);

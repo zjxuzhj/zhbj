@@ -14,6 +14,16 @@ public class product extends BmobObject {
     private String name;
     private Integer score;
 
+    public String getDetials() {
+        return detials;
+    }
+
+    public void setDetials(String detials) {
+        this.detials = detials;
+    }
+
+    private String detials;
+
     public String getTitle() {
         return title;
     }

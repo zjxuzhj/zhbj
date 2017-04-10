@@ -124,13 +124,14 @@ public class PicturesPager extends BasePager {
         query.findObjects(new FindListener<news>() {
             @Override
             public void done(List<news> object, BmobException e) {
+
                 if (e == null) {
+                    picNewsList.clear();
                     for (news newsBean : object) {
                         if (newsBean.getType() == 3) {
                             picNewsList.add(newsBean);
                         }
                     }
-
                     if (picNewsList != null) {
                         mAdapter = new PhotoAdapter();
                         lvPhoto.setAdapter(mAdapter);

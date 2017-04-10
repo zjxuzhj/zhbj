@@ -184,7 +184,7 @@
                     android:layout_weight="1.0"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="150"
+                    android:text=""
                     android:textColor="@color/value_color"
                     android:textSize="12.0sp"/>
 
@@ -198,8 +198,8 @@
                     android:ellipsize="end"
                     android:gravity="bottom"
                     android:singleLine="true"
-                    android:text="200rre"
-                    android:textColor="@color/value_color"
+                    android:text="Hot"
+                    android:textColor="@color/red"
                     android:textSize="12.0sp"/>
 
                 <TextView

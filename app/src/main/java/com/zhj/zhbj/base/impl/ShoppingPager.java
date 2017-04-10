@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lidroid.xutils.BitmapUtils;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.activity.ProductDetailActivity;
 import com.zhj.zhbj.adapter.CommenAdapter;
@@ -39,6 +40,7 @@ public class ShoppingPager extends BasePager {
     ListView mListView;
     private Activity mActivity;
     private MyAdapter mMyAdapter;
+    private List<product> objectList;
 
     public ShoppingPager(Activity activity) {
         super(activity);
@@ -67,6 +69,7 @@ public class ShoppingPager extends BasePager {
 
 
                     if (object != null) {
+                        objectList = object;
                         mMyAdapter = new MyAdapter(object);
 
                         mListView.setAdapter(mMyAdapter);
@@ -88,29 +91,52 @@ public class ShoppingPager extends BasePager {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent();
                     intent.setClass(mActivity, ProductDetailActivity.class);
+                intent.putExtra("productDetail", objectList.get(i));
                     mActivity.startActivity(intent);
             }
         });
     }
 
     class MyAdapter extends CommenAdapter {
-
+        private BitmapUtils bitmapUtils;
+        private List<product> objectList;
         public MyAdapter(List<product> object) {
             super(object);
+            objectList = object;
+            bitmapUtils = new BitmapUtils(mActivity);
+
+            bitmapUtils.configDefaultLoadingImage(R.mipmap.default_list_pic);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup viewGroup) {
+            product mproduct=objectList.get(position);
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = View.inflate(mActivity, R.layout.goods_list_item, null);
+                holder.price = (TextView) convertView.findViewById(R.id.price);
+                holder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
+                holder.iv_photo = (ImageView) convertView.findViewById(R.id.photo);
+                holder.title = (TextView) convertView.findViewById(R.id.title);
 
-
-            ViewHolder holder = ViewHolder.get(mActivity, R.layout.goods_list_item, convertView, viewGroup);
-
-
-            TextView tv = holder.getView(R.id.title);
-            ImageView iv_photo = holder.getView(R.id.photo);
-            tv.setText("aaaa");
-            return holder.getConvertView();
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            bitmapUtils.display(holder.iv_photo, mproduct.getImg().getUrl());
+            holder.price.setText(mproduct.getScore()+" 积分");
+            holder.tv_content.setText(mproduct.getName());
+            holder.title.setText(mproduct.getTitle());
+            return convertView;
         }
+
+    }
+    public static class ViewHolder {
+        public TextView title;
+        public TextView price;
+        public TextView tv_content;
+        public ImageView iv_photo;
     }
 
 }
