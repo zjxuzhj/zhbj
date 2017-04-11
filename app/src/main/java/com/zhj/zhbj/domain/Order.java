@@ -37,6 +37,16 @@ public class Order extends BmobObject {
     private String soldDate;
     private String pid;
 
+    public product getProductId() {
+        return ProductId;
+    }
+
+    public void setProductId(product productId) {
+        ProductId = productId;
+    }
+
+    private product ProductId;
+
     public String getState() {
         return state;
     }

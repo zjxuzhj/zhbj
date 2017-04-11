@@ -46,6 +46,7 @@ public class MyOrderActivity extends AppCompatActivity {
     }
 
     private void initData() {
+
         User currentUser = BmobUser.getCurrentUser(User.class);
         if (currentUser != null) {
             mObjectId = currentUser.getObjectId();
@@ -53,8 +54,9 @@ public class MyOrderActivity extends AppCompatActivity {
         BmobQuery<Order> query = new BmobQuery<>();
         //返回50条数据，如果不加上这条语句，默认返回10条数据
         //查询playerName叫“比目”的数据
-        query.addWhereEqualTo("uid", mObjectId);
-        query.setLimit(50);
+        query.include("ProductId");
+        query.addWhereEqualTo("uid", "7cLiMMMs");
+//        query.setLimit(50);
         //执行查询方法
         query.findObjects(new FindListener<Order>() {
             @Override
@@ -62,22 +64,7 @@ public class MyOrderActivity extends AppCompatActivity {
                 if (e == null) {
                     if (object != null) {
                         mOrderList = object;
-                        for (Order order : mOrderList) {
-                            BmobQuery<product> query = new BmobQuery<>();
-                            //执行查询方法
-                            query.getObject(order.getPid(), new QueryListener<product>() {
-                                @Override
-                                public void done(product product, BmobException e) {
-                                    if (e == null) {
-                                        mProductList.add(product);
-                                    } else {
-                                        Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
-                                    }
-                                }
-                            });
-
-                        }
-                        mRecycleview.setAdapter(new MyAdapter(mOrderList, mProductList));
+                        mRecycleview.setAdapter(new MyAdapter(mOrderList));
 
                     }
                 } else {
@@ -95,14 +82,11 @@ public class MyOrderActivity extends AppCompatActivity {
     class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         private List<Order> mDatas;
         private BitmapUtils bitmapUtils;
-        private List<product> mProductList;
 
         //创建构造参数，用来接受数据集
-        public MyAdapter(List<Order> datas, List<product> productList) {
+        public MyAdapter(List<Order> datas) {
             this.mDatas = datas;
-            this.mProductList = productList;
             bitmapUtils = new BitmapUtils(MyOrderActivity.this);
-
             bitmapUtils.configDefaultLoadingImage(R.mipmap.default_list_pic);
         }
 
@@ -121,9 +105,9 @@ public class MyOrderActivity extends AppCompatActivity {
         public void onBindViewHolder(MyViewHolder holder, int position) {
             //将数据填充到具体的view中
             holder.tv_order_time.setText("下单时间: " + mDatas.get(position).getSoldDate().toString());
-            holder.tv_product_name.setText("产品名称: " + mProductList.get(position).getTitle());
+            holder.tv_product_name.setText("产品名称: " + mDatas.get(position).getProductId().getTitle());
             holder.tv_order_state.setText("订单状态: " + mDatas.get(position).getState());
-            bitmapUtils.display(holder.imageView2, mProductList.get(position).getImg().getUrl());
+            bitmapUtils.display(holder.imageView2, mDatas.get(position).getProductId().getImg().getUrl());
         }
 
 
