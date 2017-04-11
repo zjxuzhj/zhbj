@@ -1,9 +1,12 @@
 package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -16,13 +19,21 @@ import com.zhj.zhbj.activity.AddressActivity;
 import com.zhj.zhbj.activity.LoginActivity;
 import com.zhj.zhbj.activity.MainActivity;
 import com.zhj.zhbj.activity.MyOrderActivity;
+import com.zhj.zhbj.activity.ProductDetailActivity;
 import com.zhj.zhbj.base.BasePager;
+import com.zhj.zhbj.domain.Order;
 import com.zhj.zhbj.domain.User;
 import com.zhj.zhbj.utils.PrefUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import static cn.bmob.v3.Bmob.getApplicationContext;
 
@@ -89,7 +100,26 @@ public class SettingPager extends BasePager {
         mTvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setLogOut();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
+                        .setMessage("确定要退出账号吗？");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        // 点击按钮事件
+                        setLogOut();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        // 点击按钮事件
+                    }
+                });
+                builder.create();
+                builder.show();
+
             }
         });
         if (userInfo != null) {

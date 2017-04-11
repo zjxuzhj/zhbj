@@ -59,9 +59,11 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private TabAdapter tabAdapter;
     private List<news> newsdataList = new ArrayList<>();
     private List<news> topnewsList = new ArrayList<>();
+    private Integer position;
 
-    public TabDetailPager(Activity activity) {
+    public TabDetailPager(Activity activity,int i) {
         super(activity);
+        position=i;
     }
 
     @Override
@@ -125,10 +127,6 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
     @Override
     public void initData() {
-//        String cache = CacheUtils.getCache(mUrl, mActivity);//读取缓存
-//        if (!TextUtils.isEmpty(cache)) {
-//            parseData(cache, false);
-//        }
         BmobQuery<news> query = new BmobQuery<>();
         //返回50条数据，如果不加上这条语句，默认返回10条数据
         query.setLimit(50);
@@ -139,9 +137,10 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 if (e == null) {
                     newsdataList.clear();
                     topnewsList.clear();
-
+                    mLvList.onRefreshComplete(true);
                     parseData(object);
                 } else {
+                    mLvList.onRefreshComplete(false);
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
             }
@@ -154,6 +153,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private void parseData(List<news> object) {
         for (news newsBean : object) {
             if (newsBean.getType() == 1) {
+                if(newsBean.getTabType()==position)
                 newsdataList.add(newsBean);
             } else if (newsBean.getType() == 2) {
                 topnewsList.add(newsBean);
@@ -191,10 +191,10 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
                         vpTabDetail.setCurrentItem(currentItem); //切换到下一个页面
 
-//                        handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
+                        handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
                     }
                 };
-//            handler.sendEmptyMessageDelayed(0, 3000);
+            handler.sendEmptyMessageDelayed(0, 3000);
             }
         } else {
             myListAdapter.notifyDataSetChanged();
@@ -238,8 +238,8 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            ImageView image = new ImageView(mActivity);
+        public Object instantiateItem(ViewGroup container, final int position) {
+            final ImageView image = new ImageView(mActivity);
             image.setImageResource(R.drawable.topnews_item_default);
             image.setScaleType(ImageView.ScaleType.FIT_XY);//基于控件大小填充图片
             utils.display(image, topnewsList.get(position).getImg().getUrl()); //传递image对象和图片地址
@@ -264,12 +264,19 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     handler.removeMessages(0);
+
                     break;
                 case MotionEvent.ACTION_CANCEL:
-//                    handler.sendEmptyMessageDelayed(0, 3000);
+                    handler.sendEmptyMessageDelayed(0, 3000);
                     break;
                 case MotionEvent.ACTION_UP:
-//                    handler.sendEmptyMessageDelayed(0, 3000);
+                    handler.sendEmptyMessageDelayed(0, 3000);
+                    // 跳转新闻详情页
+                    Intent intent = new Intent();
+                    intent.setClass(mActivity, NewsDetailActivity.class);
+                    intent.putExtra("news", newsdataList.get(position));
+                    System.out.println(newsdataList.get(position).getHtml().getUrl());
+                    mActivity.startActivity(intent);
                     break;
             }
 

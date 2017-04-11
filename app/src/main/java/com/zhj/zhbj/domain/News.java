@@ -73,4 +73,14 @@ public class news extends BmobObject {
     }
 
     private Integer score;
+
+    public Integer getTabType() {
+        return tabType;
+    }
+
+    public void setTabType(Integer tabType) {
+        this.tabType = tabType;
+    }
+
+    private Integer tabType;
 }

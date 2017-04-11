@@ -26,7 +26,6 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.QueryListener;
 
 public class MyOrderActivity extends AppCompatActivity {
 
@@ -65,7 +64,6 @@ public class MyOrderActivity extends AppCompatActivity {
                     if (object != null) {
                         mOrderList = object;
                         mRecycleview.setAdapter(new MyAdapter(mOrderList));
-
                     }
                 } else {
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());

@@ -48,8 +48,8 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
     @Override
     public void initData() {
         mPagers = new ArrayList<>();
-        for (int i=0;i<15;i++){
-            mPagers.add(new TabDetailPager((mActivity)));
+        for (int i=0;i<8;i++){
+            mPagers.add(new TabDetailPager(mActivity,i));
         }
         menuDetailAdapter=new MenuDetailAdapter();
         mViewPager.setAdapter(menuDetailAdapter);
@@ -74,7 +74,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager implements ViewPage
 
         @Override
         public int getCount() {
-            return 15;
+            return 8;
         }
 
         @Override

@@ -1,7 +1,6 @@
 package com.zhj.zhbj.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +20,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by HongJay on 2016/7/21.
  */
-public class RefreshListView extends ListView implements AbsListView.OnScrollListener ,AdapterView.OnItemClickListener{
+public class RefreshListView extends ListView implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener {
     public static final int STATE_PULL_REFRESH = 0;
     public static final int STATE_RELEASH_REFRESH = 1;
     public static final int STATE_REFRESHING = 2;
@@ -103,7 +102,9 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 startY = (int) ev.getRawY();
-
+                if (mCurrentState == STATE_PULL_REFRESH) {
+                    return true;
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (startY == -1) {
@@ -125,7 +126,6 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                         mCurrentState = STATE_PULL_REFRESH;
                         refreshState();
                     }
-                    return true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -202,7 +202,7 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                     setSelection(getCount() - 1);
                 }
                 isLoadMore = true;
-                if(mListener!=null){
+                if (mListener != null) {
                     mListener.onLoadMore();
                 }
 
@@ -233,15 +233,17 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                     - getHeaderViewsCount(), id);
         }
     }
+
     public interface OnRefreshListener {
         void onRefresh();
+
         void onLoadMore(); //加载下一页数据
     }
 
     //收起下拉刷新的控件
     public void onRefreshComplete(boolean success) {
         if (isLoadMore) {
-            mFooterView.setPadding(0,-mFooterViewHeight,0,0);
+            mFooterView.setPadding(0, -mFooterViewHeight, 0, 0);
             isLoadMore = false;
         } else {
 
