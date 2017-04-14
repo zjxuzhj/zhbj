@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/list_view_item_click"
     android:orientation="vertical">
 
     <TextView
@@ -17,13 +20,11 @@
         android:layout_alignTop="@+id/photo"
         android:layout_toRightOf="@+id/photo"
         android:layout_toEndOf="@+id/photo" />
-
     <ImageView
         android:id="@+id/photo"
         android:layout_width="100dp"
         android:layout_height="70dp"
         android:scaleType="fitXY"
-        android:background="@android:color/darker_gray"
         android:padding="1dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
@@ -33,14 +34,16 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/image_demo" />
+
     <TextView
+        android:text="广告"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2016年7月21日10:25:27"
-        android:padding="5dp"
-        android:id="@+id/textView2"
-        android:textSize="12sp"
         android:layout_alignBottom="@+id/photo"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:textSize="9sp"
+        android:id="@+id/textView9"/>
+
+
 </RelativeLayout>

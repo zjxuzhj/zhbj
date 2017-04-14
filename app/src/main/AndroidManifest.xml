@@ -38,6 +38,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
+    <!--百度定位sdk-->
+
     <application
         android:name=".activity.MyApplication"
         android:allowBackup="true"
@@ -203,6 +205,12 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="e31063fc795aedcb788c67f4"/>
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
+        </service>
+        <!--//key:开发者申请的Key  百度定位sdk-->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="vGxMUImoI6WYUG6vj22A5TydyDeHVnyQ" />
 
         <activity android:name=".activity.AddressActivity">
         </activity>

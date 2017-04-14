@@ -11,6 +11,21 @@ public class news extends BmobObject {
     private Integer type;//新闻类型
     private BmobFile html;//新闻html
 
+    public news(String title, BmobFile img, Integer id, String pubdate) {
+        this.title = title;
+        this.img = img;
+        this.id = id;
+        this.pubdate = pubdate;
+    }
+
+    public news(String tableName, String title, BmobFile img, Integer id, String pubdate) {
+        super(tableName);
+        this.title = title;
+        this.img = img;
+        this.id = id;
+        this.pubdate = pubdate;
+    }
+
     public String getTitle() {
         return title;
     }

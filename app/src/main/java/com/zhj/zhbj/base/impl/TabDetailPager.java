@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,21 +17,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.lidroid.xutils.BitmapUtils;
-import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
-import com.lidroid.xutils.http.client.HttpRequest;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.activity.NewsDetailActivity;
+import com.zhj.zhbj.activity.ProductDetailActivity;
 import com.zhj.zhbj.base.BaseMenuDetailPager;
-import com.zhj.zhbj.domain.TabData;
+import com.zhj.zhbj.domain.ad;
 import com.zhj.zhbj.domain.news;
-import com.zhj.zhbj.global.GlobalConstant;
+import com.zhj.zhbj.domain.product;
 import com.zhj.zhbj.utils.PrefUtils;
 import com.zhj.zhbj.view.RefreshListView;
 
@@ -59,11 +53,12 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private TabAdapter tabAdapter;
     private List<news> newsdataList = new ArrayList<>();
     private List<news> topnewsList = new ArrayList<>();
+    private List<ad> mAdList = new ArrayList<>();
     private Integer position;
 
-    public TabDetailPager(Activity activity,int i) {
+    public TabDetailPager(Activity activity, int i) {
         super(activity);
-        position=i;
+        position = i;
     }
 
     @Override
@@ -101,23 +96,29 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
 
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
                 //把点击过的新闻的id加入
                 ids = PrefUtils.getString(mActivity, "read_ids", "");
-                String readId = newsdataList.get(i).getId().toString();
+                String readId = newsdataList.get(position).getId().toString();
                 if (!ids.contains(readId)) {
                     ids = ids + readId + ",";
                     PrefUtils.putString(mActivity, "read_ids", ids);
                 }
                 changeReadColor(view);
-
+                if(position==5){
+                    Intent intent = new Intent();
+                    intent.setClass(mActivity, ProductDetailActivity.class);
+                    intent.putExtra("productDetail", mAdList.get(0).getPid());
+                    mActivity.startActivity(intent);
+                }else{
                 // 跳转新闻详情页
                 Intent intent = new Intent();
                 intent.setClass(mActivity, NewsDetailActivity.class);
-                intent.putExtra("news", newsdataList.get(i));
-                System.out.println(newsdataList.get(i).getHtml().getUrl());
+                intent.putExtra("news", newsdataList.get(position));
+                System.out.println(newsdataList.get(position).getHtml().getUrl());
                 mActivity.startActivity(intent);
+                }
             }
         });
         indicator = (CirclePageIndicator) headerView.findViewById(R.id.indicator);
@@ -127,20 +128,37 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
     @Override
     public void initData() {
-        BmobQuery<news> query = new BmobQuery<>();
+
+        BmobQuery<ad> queryAd = new BmobQuery<>();
         //返回50条数据，如果不加上这条语句，默认返回10条数据
-        query.setLimit(50);
+        //查询playerName叫“比目”的数据
+        queryAd.include("pid");
         //执行查询方法
-        query.findObjects(new FindListener<news>() {
+        queryAd.findObjects(new FindListener<ad>() {
             @Override
-            public void done(List<news> object, BmobException e) {
+            public void done(final List<ad> object, BmobException e) {
                 if (e == null) {
-                    newsdataList.clear();
-                    topnewsList.clear();
-                    mLvList.onRefreshComplete(true);
-                    parseData(object);
+                    mAdList.clear();
+                    mAdList.addAll(object);
+                    BmobQuery<news> query = new BmobQuery<>();
+                    //返回50条数据，如果不加上这条语句，默认返回10条数据
+                    query.setLimit(50);
+                    //执行查询方法
+                    query.findObjects(new FindListener<news>() {
+                        @Override
+                        public void done(List<news> object, BmobException e) {
+                            if (e == null) {
+                                newsdataList.clear();
+                                topnewsList.clear();
+                                mLvList.onRefreshComplete(true);
+                                parseData(object);
+                            } else {
+                                mLvList.onRefreshComplete(false);
+                                Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                            }
+                        }
+                    });
                 } else {
-                    mLvList.onRefreshComplete(false);
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
             }
@@ -153,13 +171,22 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private void parseData(List<news> object) {
         for (news newsBean : object) {
             if (newsBean.getType() == 1) {
-                if(newsBean.getTabType()==position)
-                newsdataList.add(newsBean);
+                if (newsBean.getTabType() == position) {
+                    newsdataList.add(newsBean);
+
+                }
             } else if (newsBean.getType() == 2) {
                 topnewsList.add(newsBean);
             }
         }
+        if(newsdataList.size()>5){
+            if(mAdList.size()>0) {
+                product product = mAdList.get(0).getPid();
+                news news = new news(product.getTitle(),product.getImg(),product.getScore(),product.getCreatedAt());
+                newsdataList.add(5,news);
+            }
 
+        }
         myListAdapter = new MyListAdapter();
         mLvList.setAdapter(myListAdapter);
 
@@ -188,13 +215,11 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                         } else {
                             currentItem = 0;
                         }
-
                         vpTabDetail.setCurrentItem(currentItem); //切换到下一个页面
-
                         handler.sendEmptyMessageDelayed(0, 3000); //循环发送消息。
                     }
                 };
-            handler.sendEmptyMessageDelayed(0, 3000);
+                handler.sendEmptyMessageDelayed(0, 3000);
             }
         } else {
             myListAdapter.notifyDataSetChanged();
@@ -284,6 +309,9 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         }
     }
 
+    public static final int TYPE_NORMAL = 0;
+    public static final int TYPE_AD = 1;
+
     class MyListAdapter extends BaseAdapter {
 
         private BitmapUtils utils;
@@ -305,42 +333,86 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         }
 
         @Override
+        public int getItemViewType(int position) {
+            if (position == 5) {
+                return TYPE_AD;
+            } else {
+                return TYPE_NORMAL;
+            }
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 2;
+        }
+
+        @Override
         public long getItemId(int i) {
             return i;
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            ViewHolder holder;
-            news item = getItem(i);
-            if (view == null) {
-                holder = new ViewHolder();
-                View view1 = View.inflate(mActivity, R.layout.list_news_item, null);
-                holder.title = (TextView) view1.findViewById(R.id.textView);
-                holder.time = (TextView) view1.findViewById(R.id.textView2);
-                holder.image = (ImageView) view1.findViewById(R.id.imageView);
-                holder.title.setText(item.getTitle());
-                holder.time.setText(item.getPubdate());
-                utils.display(holder.image, item.getImg().getUrl());
-                view1.setTag(holder);
-                return view1;
-            } else {
-                holder = (ViewHolder) view.getTag();
+        public View getView(int position, View convertView, ViewGroup viewGroup) {
+            NewsViewHolder newsViewHolder;
+            AdViewHolder adViewHolder;
+            switch (getItemViewType(position)) {
+                case TYPE_NORMAL:
+                    news item = getItem(position);
+                    if (convertView == null) {
+                        newsViewHolder = new NewsViewHolder();
+                        View view1 = View.inflate(mActivity, R.layout.list_news_item, null);
+                        newsViewHolder.title = (TextView) view1.findViewById(R.id.textView);
+                        newsViewHolder.time = (TextView) view1.findViewById(R.id.textView2);
+                        newsViewHolder.image = (ImageView) view1.findViewById(R.id.photo);
+                        newsViewHolder.appoitment_img = (ImageView) view1.findViewById(R.id.appoitment_img);
+                        newsViewHolder.title.setText(item.getTitle());
+                        newsViewHolder.time.setText(item.getPubdate());
+                        utils.display(newsViewHolder.image, item.getImg().getUrl());
+                        view1.setTag(newsViewHolder);
+                        return view1;
+                    } else {
+                        newsViewHolder = (NewsViewHolder) convertView.getTag();
+                    }
+                    newsViewHolder.title.setText(item.getTitle());
+                    newsViewHolder.time.setText(item.getPubdate());
+                    utils.display(newsViewHolder.image, item.getImg().getUrl());
+
+                    String ids = PrefUtils.getString(mActivity, "read_ids", "");
+                    if (ids.contains(getItem(position).getId().toString())) {
+                        newsViewHolder.title.setTextColor(Color.GRAY);
+                    } else {
+                        newsViewHolder.title.setTextColor(Color.BLACK);
+                    }
+                    break;
+                case TYPE_AD:
+                    news itemAd = getItem(position);
+                    if (convertView == null) {
+                        adViewHolder = new AdViewHolder();
+                        convertView = View.inflate(mActivity, R.layout.ad_list_item, null);
+                        adViewHolder.iv_photo = (ImageView) convertView.findViewById(R.id.photo);
+                        adViewHolder.title = (TextView) convertView.findViewById(R.id.textView);
+                        convertView.setTag(adViewHolder);
+                    } else {
+                        adViewHolder = (AdViewHolder) convertView.getTag();
+                    }
+                    utils.display(adViewHolder.iv_photo, itemAd.getImg().getUrl());
+                    adViewHolder.title.setText(itemAd.getTitle());
+
+                    break;
             }
+            return convertView;
+        }
 
+        class NewsViewHolder {
+            TextView title, time;
+            ImageView image,appoitment_img;
+        }
 
-            holder.title.setText(item.getTitle());
-            holder.time.setText(item.getPubdate());
-            utils.display(holder.image, item.getImg().getUrl());
-
-            String ids = PrefUtils.getString(mActivity, "read_ids", "");
-            if (ids.contains(getItem(i).getId().toString())) {
-                holder.title.setTextColor(Color.GRAY);
-            } else {
-                holder.title.setTextColor(Color.BLACK);
-            }
-
-            return view;
+        class AdViewHolder {
+            public TextView title;
+            public TextView price;
+            public TextView tv_content;
+            public ImageView iv_photo;
         }
     }
 

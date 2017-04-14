@@ -19,7 +19,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }
     productFlavors {
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
     }
 }
 
@@ -47,4 +56,5 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile files('libs/BaiduLBS_Android.jar')
 }

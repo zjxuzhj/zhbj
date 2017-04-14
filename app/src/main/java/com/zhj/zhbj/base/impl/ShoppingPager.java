@@ -2,7 +2,6 @@ package com.zhj.zhbj.base.impl;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +15,10 @@ import com.lidroid.xutils.BitmapUtils;
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.activity.ProductDetailActivity;
 import com.zhj.zhbj.adapter.CommenAdapter;
-import com.zhj.zhbj.adapter.ViewHolder;
 import com.zhj.zhbj.base.BasePager;
 import com.zhj.zhbj.domain.User;
-import com.zhj.zhbj.domain.news;
 import com.zhj.zhbj.domain.product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,12 +62,9 @@ public class ShoppingPager extends BasePager {
             @Override
             public void done(List<product> object, BmobException e) {
                 if (e == null) {
-
-
                     if (object != null) {
                         objectList = object;
                         mMyAdapter = new MyAdapter(object);
-
                         mListView.setAdapter(mMyAdapter);
                         initView();
                     }
@@ -118,7 +111,7 @@ public class ShoppingPager extends BasePager {
                 holder.price = (TextView) convertView.findViewById(R.id.price);
                 holder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
                 holder.iv_photo = (ImageView) convertView.findViewById(R.id.photo);
-                holder.title = (TextView) convertView.findViewById(R.id.title);
+                holder.title = (TextView) convertView.findViewById(R.id.textView);
 
                 convertView.setTag(holder);
             } else {
