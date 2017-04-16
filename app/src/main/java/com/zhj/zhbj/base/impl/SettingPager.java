@@ -34,6 +34,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.jpush.android.api.JPushInterface;
 
 import static cn.bmob.v3.Bmob.getApplicationContext;
 
@@ -130,14 +131,16 @@ public class SettingPager extends BasePager {
             public void onClick(View view) {
                 if (PrefUtils.getBoolean(mActivity, "isNotice", false)) {
                     mCbNotice.setChecked(false);
+                    JPushInterface.stopPush(getApplicationContext());
                     PrefUtils.putBoolean(mActivity, "isNotice", false);
                 } else {
                     mCbNotice.setChecked(true);
+                    JPushInterface.resumePush(getApplicationContext());
                     PrefUtils.putBoolean(mActivity, "isNotice", true);
                 }
             }
         });
-        mCbNotice.setChecked(PrefUtils.getBoolean(mActivity, "isNotice", false));
+        mCbNotice.setChecked(PrefUtils.getBoolean(mActivity, "isNotice", true));
         mTvFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

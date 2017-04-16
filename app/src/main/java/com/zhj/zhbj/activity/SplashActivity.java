@@ -27,8 +27,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //第一：默认初始化
         Bmob.initialize(this, "639c210afd35e933d5a9e60e9d074a95");
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
         initViews();
@@ -46,15 +44,11 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
     }
 
     private void initViews() {

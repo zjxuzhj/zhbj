@@ -36,19 +36,7 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//        Person p2 = new Person();
-//        p2.setName("lucky");
-//        p2.setAddress("北京海淀");
-//        p2.save(new SaveListener<String>() {
-//            @Override
-//            public void done(String objectId,BmobException e) {
-//                if(e==null){
-//                    Toast.makeText(MainActivity.this,"添加数据成功，返回objectId为：" + objectId,Toast.LENGTH_SHORT).show();
-//                }else{
-//                    Toast.makeText(MainActivity.this,"创建数据失败：" + e.getMessage(),Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
 
         initFragment();
         mLocationClient = new LocationClient(getApplicationContext());
