@@ -11,7 +11,7 @@ import java.util.List;
  */
 public abstract class CommenAdapter<T> extends BaseAdapter{
 
-    List<T> mData = new ArrayList<>();
+    public List<T> mData = new ArrayList<>();
 
     public CommenAdapter(List<T> data) {
         mData = data;

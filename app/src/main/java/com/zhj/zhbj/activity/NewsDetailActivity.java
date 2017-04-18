@@ -1,21 +1,21 @@
 package com.zhj.zhbj.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhj.zhbj.R;
@@ -33,8 +33,6 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
-
 /**
  * Created by HongJay on 2016/7/25.
  */
@@ -43,6 +41,8 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
     EditText mEtInputComment;
     @BindView(R.id.ib_show_comment)
     ImageButton mIbShowComment;
+    @BindView(R.id.tv_send)
+    TextView mTvSend;
     private WebView mWebView;
     private ImageButton btnBack;
     private ImageButton btnSize;
@@ -72,13 +72,6 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
         btnBack.setOnClickListener(this);
         btnSize.setOnClickListener(this);
         btnShare.setOnClickListener(this);
-//        mEtInputComment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onFocusChange(true);
-//            }
-//        });
-
 
         mCurrentNews = (news) getIntent().getExtras().get("news");
         settings = mWebView.getSettings();
@@ -89,19 +82,40 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
                 super.onPageStarted(view, url, favicon);
                 pbProgress.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-
                 super.onPageFinished(view, url);
                 pbProgress.setVisibility(View.INVISIBLE);
             }
         });
         mWebView.loadUrl(mCurrentNews.getHtml().getUrl());// 加载网页
+
+        mIbShowComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(NewsDetailActivity.this, CommentActivity.class);
+                intent.putExtra("nid", mCurrentNews.getObjectId());
+                startActivity(intent);
+            }
+        });
+        mEtInputComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    mIbShowComment.setVisibility(View.GONE);
+                    mTvSend.setVisibility(View.VISIBLE);
+                }else{
+                    mTvSend.setVisibility(View.GONE);
+                    mIbShowComment.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
     }
 
     @Override
@@ -113,34 +127,10 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
         } else if (view.getId() == R.id.btn_share) {
             showShare();
         }
-
-
     }
 
     private int mCurrentSizeIndex = 2; //点击确定前选择的值
     private int mCurrentItem = 2;  //点击确定后选择的值
-
-//    /**
-//     * 显示或隐藏输入法
-//     */
-//    private void onFocusChange(boolean hasFocus) {
-//        final boolean isFocus = hasFocus;
-//        (new Handler()).postDelayed(new Runnable() {
-//            public void run() {
-//                InputMethodManager imm = (InputMethodManager)
-//                        NewsDetailActivity.this.getSystemService(INPUT_METHOD_SERVICE);
-//                if (isFocus) {
-//                    //显示输入法
-//                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-//                    mEtInputComment.setFocusable(true);
-//                    mEtInputComment.requestFocus();
-//                } else {
-//                    //隐藏输入法
-//                    imm.hideSoftInputFromWindow(mEtInputComment.getWindowToken(), 0);
-//                }
-//            }
-//        }, 100);
-//    }
 
     private void showTextSizeDialog() {
 
