@@ -20,18 +20,25 @@ import android.widget.Toast;
 
 import com.zhj.zhbj.R;
 import com.zhj.zhbj.domain.User;
+import com.zhj.zhbj.domain.comment;
 import com.zhj.zhbj.domain.news;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+
+import static com.baidu.location.h.j.t;
 
 /**
  * Created by HongJay on 2016/7/25.
@@ -103,17 +110,32 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
                 startActivity(intent);
             }
         });
-        mEtInputComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mTvSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    mIbShowComment.setVisibility(View.GONE);
-                    mTvSend.setVisibility(View.VISIBLE);
+            public void onClick(View view) {
+                User user = BmobUser.getCurrentUser(User.class);
+                if(user!=null) {
+                   if (!mEtInputComment.getText().toString().equals("")) {
+                        comment comment = new comment();
+                        comment.setUid(user);
+                        comment.setNid(mCurrentNews);
+                        comment.setMessage(mEtInputComment.getText().toString());
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+                        comment.setTime(df.format(new Date()));
+                        comment.save(new SaveListener<String>() {
+                            @Override
+                            public void done(String s, BmobException e) {
+                                if (e == null) {
+                                    Log.i("bmob", "保存成功");
+                                } else {
+                                    Log.i("bmob", "保存失败：" + e.getMessage());
+                                }
+                            }
+                        });
+                    }
                 }else{
-                    mTvSend.setVisibility(View.GONE);
-                    mIbShowComment.setVisibility(View.VISIBLE);
+                    Toast.makeText(NewsDetailActivity.this, "登录账户后才可以进行评论", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
