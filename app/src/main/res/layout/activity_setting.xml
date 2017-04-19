@@ -71,6 +71,12 @@
         style="@style/text_lin_main"
         android:text="我的订单"
         />
+    <TextView
+        android:id="@+id/tv_share"
+        android:visibility="gone"
+        style="@style/text_lin_main"
+        android:text="我的分享"
+        />
 
     <TextView
         android:id="@+id/tv_feedback"

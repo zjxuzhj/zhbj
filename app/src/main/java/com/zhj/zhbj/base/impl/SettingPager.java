@@ -6,7 +6,6 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -19,21 +18,14 @@ import com.zhj.zhbj.activity.AddressActivity;
 import com.zhj.zhbj.activity.LoginActivity;
 import com.zhj.zhbj.activity.MainActivity;
 import com.zhj.zhbj.activity.MyOrderActivity;
-import com.zhj.zhbj.activity.ProductDetailActivity;
+import com.zhj.zhbj.activity.MyShareActivity;
 import com.zhj.zhbj.base.BasePager;
-import com.zhj.zhbj.domain.Order;
 import com.zhj.zhbj.domain.User;
 import com.zhj.zhbj.utils.PrefUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 import cn.jpush.android.api.JPushInterface;
 
 import static cn.bmob.v3.Bmob.getApplicationContext;
@@ -63,6 +55,8 @@ public class SettingPager extends BasePager {
     TextView mTvFeedback;
     @BindView(R.id.tv_update)
     TextView mTvUpdate;
+    @BindView(R.id.tv_share)
+    TextView mTvShare;
     private Activity mActivity;
 
 
@@ -103,18 +97,14 @@ public class SettingPager extends BasePager {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                         .setMessage("确定要退出账号吗？");
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         // 点击按钮事件
                         setLogOut();
                     }
                 });
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         // 点击按钮事件
                     }
                 });
@@ -167,6 +157,12 @@ public class SettingPager extends BasePager {
                 mActivity.startActivity(new Intent(mActivity, MyOrderActivity.class));
             }
         });
+        mTvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.startActivity(new Intent(mActivity, MyShareActivity.class));
+            }
+        });
     }
 
     private void setLogOut() {
@@ -182,6 +178,7 @@ public class SettingPager extends BasePager {
         mTvLogOut.setVisibility(View.GONE);
         mTvAddress.setVisibility(View.GONE);
         mTvOrder.setVisibility(View.GONE);
+        mTvShare.setVisibility(View.GONE);
     }
 
     public void setLogIn() {
@@ -198,6 +195,7 @@ public class SettingPager extends BasePager {
         mTvLogin.setVisibility(View.GONE);
         mTvLogOut.setVisibility(View.VISIBLE);
         mTvAddress.setVisibility(View.VISIBLE);
+        mTvShare.setVisibility(View.VISIBLE);
     }
 
     //通过邮件反馈建议和意见
