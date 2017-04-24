@@ -98,4 +98,14 @@ public class news extends BmobObject {
     }
 
     private Integer tabType;
+
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

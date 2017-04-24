@@ -29,12 +29,6 @@ public class NewsCenterPager extends BasePager {
 
     @Override
     public void initData() {
-//        setSlidingMenuEnable(true);
-//        String cache = CacheUtils.getCache(GlobalConstant.CATEGORIES_URL, mActivity);
-//        if (!TextUtils.isEmpty(cache)) {
-//            parseData(cache);
-//            System.out.println("读取缓存");
-//        }
         basePagersList = new ArrayList<>();
         basePagersList.add(new NewsMenuDetailPager(mActivity));
         setCurrentMenuDetailPager(0);

@@ -27,24 +27,26 @@ import com.zhj.zhbj.domain.share;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
-import static com.baidu.location.h.j.t;
-
 /**
  * Created by HongJay on 2016/7/25.
  */
-public class NewsDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class PushNewsDetailActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.et_input_comment)
     EditText mEtInputComment;
     @BindView(R.id.ib_show_comment)
@@ -64,13 +66,16 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        ShareSDK.initSDK(NewsDetailActivity.this, "154352dbcb695");
+        ShareSDK.initSDK(PushNewsDetailActivity.this, "154352dbcb695");
         setContentView(R.layout.activity_news_detail);
         ButterKnife.bind(this);
         User bmobUser = User.getCurrentUser(User.class);
         if (bmobUser == null) {
-            Toast.makeText(NewsDetailActivity.this, "当前未登录，无法通过分享获得积分！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PushNewsDetailActivity.this, "当前未登录，无法通过分享获得积分！", Toast.LENGTH_SHORT).show();
         }
+        //通过点击得到当前热点新闻标题
+        Bundle bundle = getIntent().getExtras();
+        String title = bundle.getString(JPushInterface.EXTRA_ALERT);
 
         mWebView = (WebView) findViewById(R.id.wv_web);
         btnBack = (ImageButton) findViewById(R.id.btn_back);
@@ -80,66 +85,82 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
         btnBack.setOnClickListener(this);
         btnSize.setOnClickListener(this);
         btnShare.setOnClickListener(this);
-
-        mCurrentNews = (news) getIntent().getExtras().get("news");
-        settings = mWebView.getSettings();
-        settings.setJavaScriptEnabled(true);// 表示支持js
-//        settings.setBuiltInZoomControls(true);// 显示放大缩小按钮
-        settings.setUseWideViewPort(true);// 支持双击缩放
-
-        mWebView.setWebViewClient(new WebViewClient() {
+        BmobQuery<news> query = new BmobQuery<>();
+        query.addWhereEqualTo("title", title);
+        //执行查询方法
+        query.findObjects(new FindListener<news>() {
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                pbProgress.setVisibility(View.VISIBLE);
-            }
+            public void done(List<news> object, BmobException e) {
+                if (e == null) {
+                    if(object!=null&&object.size()>0){
+                        mCurrentNews = object.get(0);
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                pbProgress.setVisibility(View.INVISIBLE);
-            }
-        });
-        mWebView.loadUrl(mCurrentNews.getHtml().getUrl());// 加载网页
+                        settings = mWebView.getSettings();
+                        settings.setJavaScriptEnabled(true);// 表示支持js
+                        settings.setUseWideViewPort(true);// 支持双击缩放
 
-        mIbShowComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(NewsDetailActivity.this, CommentActivity.class);
-                intent.putExtra("nid", mCurrentNews.getObjectId());
-                startActivity(intent);
-            }
-        });
-        mTvSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                User user = BmobUser.getCurrentUser(User.class);
-                if(user!=null) {
-                   if (!mEtInputComment.getText().toString().equals("")) {
-                        comment comment = new comment();
-                        comment.setUid(user);
-                        comment.setNid(mCurrentNews);
-                        comment.setMessage(mEtInputComment.getText().toString());
-                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
-                        comment.setTime(df.format(new Date()));
-                        comment.save(new SaveListener<String>() {
+                        mWebView.setWebViewClient(new WebViewClient() {
                             @Override
-                            public void done(String s, BmobException e) {
-                                if (e == null) {
-                                    Toast.makeText(NewsDetailActivity.this, "评论成功！", Toast.LENGTH_SHORT).show();
-                                    mEtInputComment.setText("");
-                                } else {
-                                    Toast.makeText(NewsDetailActivity.this, "评论发表失败，请检查网络！", Toast.LENGTH_SHORT).show();
+                            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                                super.onPageStarted(view, url, favicon);
+                                pbProgress.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onPageFinished(WebView view, String url) {
+                                super.onPageFinished(view, url);
+                                pbProgress.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                        mWebView.loadUrl(mCurrentNews.getHtml().getUrl());// 加载网页
+
+                        mIbShowComment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.setClass(PushNewsDetailActivity.this, CommentActivity.class);
+                                intent.putExtra("nid", mCurrentNews.getObjectId());
+                                startActivity(intent);
+                            }
+                        });
+                        mTvSend.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                User user = BmobUser.getCurrentUser(User.class);
+                                if(user!=null) {
+                                    if (!mEtInputComment.getText().toString().equals("")) {
+                                        comment comment = new comment();
+                                        comment.setUid(user);
+                                        comment.setNid(mCurrentNews);
+                                        comment.setMessage(mEtInputComment.getText().toString());
+                                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+                                        comment.setTime(df.format(new Date()));
+                                        comment.save(new SaveListener<String>() {
+                                            @Override
+                                            public void done(String s, BmobException e) {
+                                                if (e == null) {
+                                                    Toast.makeText(PushNewsDetailActivity.this, "评论成功！", Toast.LENGTH_SHORT).show();
+                                                    mEtInputComment.setText("");
+                                                } else {
+                                                    Toast.makeText(PushNewsDetailActivity.this, "评论发表失败，请检查网络！", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }else{
+                                    Toast.makeText(PushNewsDetailActivity.this, "登录账户后才可以进行评论", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     }
-                }else{
-                    Toast.makeText(NewsDetailActivity.this, "登录账户后才可以进行评论", Toast.LENGTH_SHORT).show();
+                } else {
+//                    mLvList.onRefreshComplete(false);
+                    Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
             }
         });
+        mCurrentNews = (news) getIntent().getExtras().get("news");
+
     }
 
     @Override
@@ -226,10 +247,10 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
                 User bmobUser = User.getCurrentUser(User.class);
                 if (bmobUser == null) {
-                    Toast.makeText(NewsDetailActivity.this, "当前未登录，无法获得分享积分！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PushNewsDetailActivity.this, "当前未登录，无法获得分享积分！", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    Toast.makeText(NewsDetailActivity.this, "恭喜您分享成功，您得到 " + mCurrentNews.getScore() + " 点积分，继续努力！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PushNewsDetailActivity.this, "恭喜您分享成功，您得到 " + mCurrentNews.getScore() + " 点积分，继续努力！", Toast.LENGTH_LONG).show();
                     final User newUser = new User();
                     newUser.setScore(bmobUser.getScore() + mCurrentNews.getScore());
                     newUser.update(bmobUser.getObjectId(), new UpdateListener() {
@@ -266,7 +287,7 @@ public class NewsDetailActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onCancel(Platform platform, int i) {
-                Toast.makeText(NewsDetailActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PushNewsDetailActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
             }
         });
         // 启动分享GUI

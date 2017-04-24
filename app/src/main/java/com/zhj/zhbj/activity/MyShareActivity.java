@@ -32,8 +32,7 @@ public class MyShareActivity extends AppCompatActivity {
     @BindView(R.id.listView)
     ListView mListView;
     private String mObjectId;
-    private List<share> mOrderList;
-    private List<news> newsdataList = new ArrayList<>();
+    private List<share> mOrderList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +61,9 @@ public class MyShareActivity extends AppCompatActivity {
             @Override
             public void done(final List<share> object, BmobException e) {
                 if (e == null) {
-                    newsdataList.clear();
+                    mOrderList.clear();
                     if (object != null) {
-
                         mOrderList = object;
-                        for (share share : mOrderList) {
-                            newsdataList.add(share.getNid());
-                        }
                         mListView.setAdapter(new MyListAdapter());
                     }
                 } else {
@@ -91,12 +86,12 @@ public class MyShareActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return newsdataList.size();
+            return mOrderList.size();
         }
 
         @Override
-        public news getItem(int i) {
-            return newsdataList.get(i);
+        public share getItem(int i) {
+            return mOrderList.get(i);
         }
 
         @Override
@@ -107,31 +102,34 @@ public class MyShareActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup viewGroup) {
             MyListAdapter.NewsViewHolder newsViewHolder;
-            news item = getItem(position);
+            share item = getItem(position);
             if (convertView == null) {
                 newsViewHolder = new MyListAdapter.NewsViewHolder();
-                View view1 = View.inflate(MyShareActivity.this, R.layout.list_news_item, null);
+                View view1 = View.inflate(MyShareActivity.this, R.layout.list_share_item, null);
                 newsViewHolder.title = (TextView) view1.findViewById(R.id.textView);
                 newsViewHolder.time = (TextView) view1.findViewById(R.id.textView2);
+                newsViewHolder.score = (TextView) view1.findViewById(R.id.textView3);
                 newsViewHolder.image = (ImageView) view1.findViewById(R.id.photo);
                 newsViewHolder.appoitment_img = (ImageView) view1.findViewById(R.id.appoitment_img);
-                newsViewHolder.title.setText(item.getTitle());
-                newsViewHolder.time.setText("分享时间: "+item.getPubdate());
-                utils.display(newsViewHolder.image, item.getImg().getUrl());
+                newsViewHolder.title.setText(item.getNid().getTitle());
+                newsViewHolder.time.setText("分享时间: "+item.getTime());
+                newsViewHolder.score.setText("获得积分: "+item.getNid().getScore());
+                utils.display(newsViewHolder.image, item.getNid().getImg().getUrl());
                 view1.setTag(newsViewHolder);
                 return view1;
             } else {
                 newsViewHolder = (MyListAdapter.NewsViewHolder) convertView.getTag();
             }
-            newsViewHolder.title.setText(item.getTitle());
-            newsViewHolder.time.setText("分享时间: "+item.getPubdate());
-            utils.display(newsViewHolder.image, item.getImg().getUrl());
+            newsViewHolder.score.setText("获得积分: "+item.getNid().getScore());
+            newsViewHolder.title.setText(item.getNid().getTitle());
+            newsViewHolder.time.setText("分享时间: "+item.getTime());
+            utils.display(newsViewHolder.image, item.getNid().getImg().getUrl());
 
             return convertView;
         }
 
         class NewsViewHolder {
-            TextView title, time;
+            TextView title, time,score;
             ImageView image, appoitment_img;
         }
 

@@ -24,6 +24,7 @@ import com.zhj.zhbj.R;
 import com.zhj.zhbj.activity.NewsDetailActivity;
 import com.zhj.zhbj.activity.ProductDetailActivity;
 import com.zhj.zhbj.base.BaseMenuDetailPager;
+import com.zhj.zhbj.domain.User;
 import com.zhj.zhbj.domain.ad;
 import com.zhj.zhbj.domain.news;
 import com.zhj.zhbj.domain.product;
@@ -52,9 +53,11 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private MyListAdapter myListAdapter;
     private TabAdapter tabAdapter;
     private List<news> newsdataList = new ArrayList<>();
+    private List<news> tempnewsdataList = new ArrayList<>();
     private List<news> topnewsList = new ArrayList<>();
     private List<ad> mAdList = new ArrayList<>();
     private Integer position;
+    private String mCity = "";
 
     public TabDetailPager(Activity activity, int i) {
         super(activity);
@@ -86,7 +89,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 if (mMoreUrl != null) {
 //                    getMoreDataFromServer();
                 } else {
-                    Toast.makeText(mActivity, "最后一页了", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(mActivity, "最后一页了", Toast.LENGTH_SHORT).show();
                     mLvList.onRefreshComplete(false);//收起脚布局
                 }
 
@@ -106,23 +109,26 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                     PrefUtils.putString(mActivity, "read_ids", ids);
                 }
                 changeReadColor(view);
-                if(position==5){
+                if (position == 5) {
                     Intent intent = new Intent();
                     intent.setClass(mActivity, ProductDetailActivity.class);
                     intent.putExtra("productDetail", mAdList.get(0).getPid());
                     mActivity.startActivity(intent);
-                }else{
-                // 跳转新闻详情页
-                Intent intent = new Intent();
-                intent.setClass(mActivity, NewsDetailActivity.class);
-                intent.putExtra("news", newsdataList.get(position));
-                System.out.println(newsdataList.get(position).getHtml().getUrl());
-                mActivity.startActivity(intent);
+                } else {
+                    // 跳转新闻详情页
+                    Intent intent = new Intent();
+                    intent.setClass(mActivity, NewsDetailActivity.class);
+                    intent.putExtra("news", newsdataList.get(position));
+                    System.out.println(newsdataList.get(position).getHtml().getUrl());
+                    mActivity.startActivity(intent);
                 }
             }
         });
         indicator = (CirclePageIndicator) headerView.findViewById(R.id.indicator);
-
+        User bmobUser = User.getCurrentUser(User.class);
+        if (bmobUser != null) {
+            mCity = bmobUser.getCity();
+        }
         return view;
     }
 
@@ -150,6 +156,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                             if (e == null) {
                                 newsdataList.clear();
                                 topnewsList.clear();
+                                tempnewsdataList.clear();
                                 mLvList.onRefreshComplete(true);
                                 parseData(object);
                             } else {
@@ -179,14 +186,26 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 topnewsList.add(newsBean);
             }
         }
-        if(newsdataList.size()>5){
-            if(mAdList.size()>0) {
-                product product = mAdList.get(0).getPid();
-                news news = new news(product.getTitle(),product.getImg(),product.getScore(),product.getCreatedAt());
-                newsdataList.add(5,news);
+        if(!mCity.equals("")){
+            for (int i = 0; i <newsdataList.size() ; i++) {
+                if(mCity.equals(newsdataList.get(i).getAddress())){
+                    tempnewsdataList.add(newsdataList.get(i));
+                    newsdataList.remove(i);
+                }
             }
-
+            newsdataList.addAll(0, tempnewsdataList);
         }
+
+
+        if (newsdataList.size() > 5) {
+            if (mAdList.size() > 0) {
+                product product = mAdList.get(0).getPid();
+                news news = new news(product.getTitle(), product.getImg(), product.getScore(), product.getCreatedAt());
+                newsdataList.add(5, news);
+            }
+        }
+
+
         myListAdapter = new MyListAdapter();
         mLvList.setAdapter(myListAdapter);
 
@@ -405,7 +424,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
         class NewsViewHolder {
             TextView title, time;
-            ImageView image,appoitment_img;
+            ImageView image, appoitment_img;
         }
 
         class AdViewHolder {
@@ -419,12 +438,6 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private void changeReadColor(View view) {
         TextView textView = (TextView) view.findViewById(R.id.textView);
         textView.setTextColor(Color.GRAY);
-    }
-
-    public static class ViewHolder {
-        public TextView title;
-        public TextView time;
-        public ImageView image;
     }
 
 }

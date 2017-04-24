@@ -47,8 +47,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     TextView mTvTitlebar;
     @BindView(R.id.iv_back)
     ImageView mIvBack;
-    @BindView(R.id.iv_share)
-    ImageView mIvShare;
     @BindView(R.id.layout_title)
     RelativeLayout mLayoutTitle;
     @BindView(R.id.tv_price)
