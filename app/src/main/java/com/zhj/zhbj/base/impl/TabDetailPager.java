@@ -32,7 +32,10 @@ import com.zhj.zhbj.utils.PrefUtils;
 import com.zhj.zhbj.view.RefreshListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
@@ -57,7 +60,8 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private List<news> topnewsList = new ArrayList<>();
     private List<ad> mAdList = new ArrayList<>();
     private Integer position;
-    private String mCity = "";
+    private String mCity ;
+    private  ad mAd;
 
     public TabDetailPager(Activity activity, int i) {
         super(activity);
@@ -110,10 +114,12 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 }
                 changeReadColor(view);
                 if (position == 5) {
-                    Intent intent = new Intent();
-                    intent.setClass(mActivity, ProductDetailActivity.class);
-                    intent.putExtra("productDetail", mAdList.get(0).getPid());
-                    mActivity.startActivity(intent);
+                    if(mAd!=null) {
+                        Intent intent = new Intent();
+                        intent.setClass(mActivity, ProductDetailActivity.class);
+                        intent.putExtra("productDetail", mAd.getPid());
+                        mActivity.startActivity(intent);
+                    }
                 } else {
                     // 跳转新闻详情页
                     Intent intent = new Intent();
@@ -127,7 +133,9 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         indicator = (CirclePageIndicator) headerView.findViewById(R.id.indicator);
         User bmobUser = User.getCurrentUser(User.class);
         if (bmobUser != null) {
-            mCity = bmobUser.getCity();
+            if(mCity==null) {
+                mCity = bmobUser.getCity();
+            }
         }
         return view;
     }
@@ -173,19 +181,34 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     }
 
     private Handler handler;
-
+    public class sortClass implements Comparator {
+        public int compare(Object arg0,Object arg1){
+            news user0 = (news)arg0;
+            news user1 = (news)arg1;
+            int flag = user1.getPubdate().compareTo(user0.getPubdate());
+            return flag;
+        }
+    }
     //解析拿到的网络数据
     private void parseData(List<news> object) {
         for (news newsBean : object) {
             if (newsBean.getType() == 1) {
                 if (newsBean.getTabType() == position) {
                     newsdataList.add(newsBean);
-
                 }
             } else if (newsBean.getType() == 2) {
                 topnewsList.add(newsBean);
             }
         }
+        //对新闻进行时间倒序
+        sortClass sort = new sortClass();
+        Collections.sort(newsdataList,sort);
+        for(int i=0;i<newsdataList.size();i++){
+            news temp = newsdataList.get(i);
+            System.out.println("姓名:"+temp.getTitle()+",生日:"+temp.getPubdate());
+        }
+
+        //如果登陆账户且有所在地，则把当地新闻添加在前
         if(!mCity.equals("")){
             for (int i = 0; i <newsdataList.size() ; i++) {
                 if(mCity.equals(newsdataList.get(i).getAddress())){
@@ -196,12 +219,26 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             newsdataList.addAll(0, tempnewsdataList);
         }
 
-
+        //通过广告权重算法计算需要展示的广告
+        int weight=0;
         if (newsdataList.size() > 5) {
             if (mAdList.size() > 0) {
-                product product = mAdList.get(0).getPid();
-                news news = new news(product.getTitle(), product.getImg(), product.getScore(), product.getCreatedAt());
-                newsdataList.add(5, news);
+                for (ad ad : mAdList) {
+                    weight += ad.getWeight();
+                }
+                Random random = new Random();
+                float i = weight*random.nextFloat();
+                for (ad ad : mAdList) {
+                    i= i-ad.getWeight();
+                    if(i<=0){
+                        mAd=ad;
+                        product product = ad.getPid();
+                        news news = new news(product.getTitle(), product.getImg(), product.getScore(), product.getCreatedAt());
+                        newsdataList.add(5, news);
+                        break;
+                    }
+                }
+
             }
         }
 

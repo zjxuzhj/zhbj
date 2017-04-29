@@ -14,11 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhj.zhbj.R;
+import com.zhj.zhbj.activity.AboutActivity;
 import com.zhj.zhbj.activity.AddressActivity;
 import com.zhj.zhbj.activity.LoginActivity;
 import com.zhj.zhbj.activity.MainActivity;
 import com.zhj.zhbj.activity.MyOrderActivity;
 import com.zhj.zhbj.activity.MyShareActivity;
+import com.zhj.zhbj.activity.PasswordActivity;
 import com.zhj.zhbj.base.BasePager;
 import com.zhj.zhbj.domain.User;
 import com.zhj.zhbj.utils.PrefUtils;
@@ -57,6 +59,10 @@ public class SettingPager extends BasePager {
     TextView mTvUpdate;
     @BindView(R.id.tv_share)
     TextView mTvShare;
+    @BindView(R.id.tv_about)
+    TextView mTvAbout;
+    @BindView(R.id.tv_password)
+    TextView mTvPassword;
     private Activity mActivity;
 
 
@@ -163,6 +169,18 @@ public class SettingPager extends BasePager {
                 mActivity.startActivity(new Intent(mActivity, MyShareActivity.class));
             }
         });
+        mTvAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.startActivity(new Intent(mActivity, AboutActivity.class));
+            }
+        });
+        mTvPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.startActivity(new Intent(mActivity, PasswordActivity.class));
+            }
+        });
     }
 
     private void setLogOut() {
@@ -179,6 +197,7 @@ public class SettingPager extends BasePager {
         mTvAddress.setVisibility(View.GONE);
         mTvOrder.setVisibility(View.GONE);
         mTvShare.setVisibility(View.GONE);
+        mTvPassword.setVisibility(View.GONE);
     }
 
     public void setLogIn() {
@@ -196,6 +215,7 @@ public class SettingPager extends BasePager {
         mTvLogOut.setVisibility(View.VISIBLE);
         mTvAddress.setVisibility(View.VISIBLE);
         mTvShare.setVisibility(View.VISIBLE);
+        mTvPassword.setVisibility(View.VISIBLE);
     }
 
     //通过邮件反馈建议和意见

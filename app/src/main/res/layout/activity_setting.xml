@@ -64,6 +64,11 @@
         style="@style/text_lin_main"
         android:text="我的地址"
         />
+    <TextView
+        android:id="@+id/tv_password"
+        style="@style/text_lin_main"
+        android:text="修改密码"
+        />
 
     <TextView
         android:id="@+id/tv_order"
@@ -93,6 +98,7 @@
         />
 
     <TextView
+        android:id="@+id/tv_about"
         style="@style/text_lin_main"
         android:text="关于"
         />
